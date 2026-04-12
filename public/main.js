@@ -15,12 +15,26 @@ import {
 } from './api.js';
 import { renderVideoStatsChart, renderComparisonCharts } from './charts.js';
 import { displayChannelInfo, showNotification } from './ui.js';
-import { comparedChannels, addComparedChannel, removeComparedChannel } from './compare.js';
+import { comparedChannels, addComparedChannel, removeComparedChannel, renderCompareSection } from './compare.js';
 import { analyzeChannelTrendsWithAI } from './ai.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabaseUrl = 'https://bwhigxoevflzhvmpgxcn.supabase.co'; // Fixed URL (was .coL)
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3aGlneG9ldmZsemh2bXBneGNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEwOTMxODMsImV4cCI6MjA2NjY2OTE4M30.XBd_NcmkNee339TxUhF31GZBmI9DxM3rWmtmJvRtfjs'; // Replace with your Supabase anon/public key
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Add this at the top of the file or before GOOGLE_CLIENT_ID is used
+// const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID;
 
 // Expose global functions for HTML event handlers (needed for remove compare button)
-window.removeComparedChannel = removeComparedChannel;
-window.handleCredentialResponse = handleCredentialResponse;
+window.removeComparedChannel = function(idx) {
+    removeComparedChannel(idx);
+    // Re-render the comparison section after removal
+    renderCompareSection();
+};
+window.handleSetAlert = handleSetAlert;
+window.handleViewGrowth = handleViewGrowth;
+window.handleRemoveTrackedChannel = handleRemoveTrackedChannel;
 
 // --- Video Pagination State ---
 let allFetchedVideos = [];
@@ -286,6 +300,7 @@ document.getElementById('addToCompareBtn').onclick = async function(e) {
     if (comparedChannels.find(c => c.id === channelId)) return;
     const channelData = await fetchChannelData(channelId);
     addComparedChannel(channelData);
+    renderCompareSection();
     renderComparisonCharts();
   } else {
     const status = document.getElementById('statusMessage');
@@ -333,6 +348,7 @@ document.getElementById('addToCompareBtn').onclick = async function(e) {
         status.textContent = 'Adding channel to compare...';
         const channelData = await fetchChannelData(channelId);
         addComparedChannel(channelData);
+        renderCompareSection();
         renderComparisonCharts();
         status.textContent = '';
         channelInfo.innerHTML = '';
@@ -369,24 +385,12 @@ const mainChannelFormTrackButton = document.querySelector('#channelForm button[t
 
 // --- Sign-In Modal Elements ---
 const signInBtn = document.getElementById('signInBtn');
-const googleSignInModal = document.getElementById('googleSignInModal');
-const closeGoogleSignInModal = document.getElementById('closeGoogleSignInModal');
+// No longer using Google Sign-In modal with Supabase Auth
 
 // --- Event Listeners ---
-if (signInBtn && googleSignInModal && closeGoogleSignInModal) {
+if (signInBtn) {
     signInBtn.addEventListener('click', () => {
-        googleSignInModal.style.display = 'flex';
-    });
-
-    closeGoogleSignInModal.addEventListener('click', () => {
-        googleSignInModal.style.display = 'none';
-    });
-
-    // Also close modal if user clicks on the background overlay
-    googleSignInModal.addEventListener('click', (event) => {
-        if (event.target === googleSignInModal) {
-            googleSignInModal.style.display = 'none';
-        }
+        handleGoogleSignIn(); // Use Supabase auth instead of showing modal
     });
 }
 
@@ -394,62 +398,87 @@ if (logoutButton) {
     logoutButton.addEventListener('click', handleLogout);
 }
 
-// --- Google Sign-In ---
-function handleCredentialResponse(response) {
-    sendGoogleTokenToBackend(response.credential)
-        .then(data => {
-            currentSessionToken = data.token;
-            currentUser = data.user;
+// --- Google Sign-In with Supabase ---
+// This function handles sign-in using Supabase Auth instead of custom JWT
+async function handleGoogleSignIn() {
+    try {
+        const redirectTo = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000'
+            : 'https://youtube-tracker-cost-estimator-supa-base-version-6w3sia5rd.vercel.app';
+            
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: redirectTo
+            }
+        });
+        
+        if (error) {
+            console.error('Supabase Google sign-in error:', error);
+            showNotification(`Sign-in failed: ${error.message}`, 'error');
+        }
+        // The redirect will handle the rest
+    } catch (error) {
+        console.error('Sign-in error:', error);
+        showNotification(`Sign-in failed: ${error.message}`, 'error');
+    }
+}
+
+// Check for auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+    console.log('Auth state changed:', event, session);
+    
+    if (event === 'SIGNED_IN' && session) {
+        currentSessionToken = session.access_token;
+        currentUser = session.user;
+        localStorage.setItem('sessionToken', currentSessionToken);
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateUIForAuthState();
+        loadTrackedChannels();
+        showNotification('Successfully signed in!', 'success');
+    } else if (event === 'SIGNED_OUT') {
+        currentSessionToken = null;
+        currentUser = null;
+        localStorage.removeItem('sessionToken');
+        localStorage.removeItem('currentUser');
+        updateUIForAuthState();
+        showNotification('Successfully logged out.', 'info');
+    }
+});
+
+// Initialize auth on page load
+async function initializeAuth() {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            currentSessionToken = session.access_token;
+            currentUser = session.user;
             localStorage.setItem('sessionToken', currentSessionToken);
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             updateUIForAuthState();
             loadTrackedChannels();
-            showNotification('Successfully signed in!', 'success');
-            // Close the modal on successful sign-in
-            if (googleSignInModal) {
-                googleSignInModal.style.display = 'none';
-            }
-        })
-        .catch(error => {
-            console.error('Sign-in error:', error);
-            showNotification(`Sign-in failed: ${error.message}`, 'error');
-            updateUIForAuthState(); // Ensure UI resets if auth fails
-        });
-}
-
-function initializeGoogleSignIn() {
-    // Check if the Google Identity Services library is loaded and initialized
-    if (typeof google === 'undefined' || typeof google.accounts === 'undefined' || typeof google.accounts.id === 'undefined') {
-        console.warn('Google Identity Services script not loaded yet or not fully initialized. Retrying...');
-        setTimeout(initializeGoogleSignIn, 500); // Retry after 500ms
-        return;
-    }
-
-    try {
-        google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
-            callback: handleCredentialResponse,
-            ux_mode: 'popup', // Use popup mode to avoid OneTap and FedCM AbortError
-            auto_select: false // Prevent auto sign-in
-        });
-        if (typeof updateUIForAuthState === 'function') {
-            try { updateUIForAuthState(); } catch (e) { /* ignore if elements missing */ }
+        } else {
+            updateUIForAuthState();
         }
     } catch (error) {
-        console.error('Error initializing Google Sign-In:', error);
+        console.error('Error initializing auth:', error);
+        updateUIForAuthState();
     }
 }
 
 // --- Logout ---
-function handleLogout() {
-    currentSessionToken = null;
-    currentUser = null;
-    localStorage.removeItem('sessionToken');
-    localStorage.removeItem('currentUser');
-    google.accounts.id.disableAutoSelect(); // Prevent auto-selection on next load
-    // Potentially call google.accounts.id.revoke(currentUser.email, done => {...}) for full sign out
-    updateUIForAuthState();
-    showNotification('Successfully logged out.', 'info');
+async function handleLogout() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error('Logout error:', error);
+            showNotification(`Logout failed: ${error.message}`, 'error');
+        }
+        // The onAuthStateChange listener will handle the rest
+    } catch (error) {
+        console.error('Logout error:', error);
+        showNotification(`Logout failed: ${error.message}`, 'error');
+    }
 }
 
 // --- Update UI based on Auth State ---
@@ -605,11 +634,44 @@ async function handleViewGrowth(channelId, channelName) {
                 }
             }
         });
-        // displayGrowthGraphModal(); // Function does not exist, so this is commented out
+        displayGrowthGraphModal();
     } catch (error) {
         console.error('Failed to fetch snapshots for graph:', error);
         showNotification(`Error loading growth data: ${error.message}`, 'error');
     }
+}
+
+// Function to display the growth graph modal
+function displayGrowthGraphModal() {
+    if (growthGraphModalElement) {
+        growthGraphModalElement.style.display = 'block';
+    }
+}
+
+// Function to display tracked channels list in the dashboard
+function displayTrackedChannelsList(channels, container, noChannelsMsg, setAlertCallback, viewGrowthCallback, removeCallback) {
+    if (!channels || channels.length === 0) {
+        container.innerHTML = '';
+        noChannelsMsg.style.display = 'block';
+        return;
+    }
+    
+    noChannelsMsg.style.display = 'none';
+    container.innerHTML = channels.map(channel => `
+        <div class="tracked-channel-item">
+            <div class="tracked-channel-info">
+                <h4>${channel.channelName}</h4>
+                <p>Channel ID: ${channel.channelId}</p>
+                <p>Added: ${new Date(channel.dateAdded).toLocaleDateString()}</p>
+                ${channel.alert ? `<p>Alert: ${channel.alert.type} > ${channel.alert.threshold}</p>` : ''}
+            </div>
+            <div class="tracked-channel-actions">
+                <button onclick="handleSetAlert('${channel.channelId}', '${channel.channelName}', prompt('Alert type (subscribers/views):', '${channel.alert?.type || ''}'), prompt('Threshold:', '${channel.alert?.threshold || ''}'))">Set Alert</button>
+                <button onclick="handleViewGrowth('${channel.channelId}', '${channel.channelName}')">View Growth</button>
+                <button onclick="handleRemoveTrackedChannel('${channel.channelId}', '${channel.channelName}')" class="remove-btn">Remove</button>
+            </div>
+        </div>
+    `).join('');
 }
 
 
@@ -751,16 +813,9 @@ async function checkIfChannelIsTracked(channelId) {
 // Add event listener for the Sign In button to trigger Google OAuth logic
 window.addEventListener('DOMContentLoaded', () => {
   const signInBtn = document.getElementById('signInBtn');
-  const googleSignInModal = document.getElementById('googleSignInModal');
-  const closeGoogleSignInModal = document.getElementById('closeGoogleSignInModal');
-  if (signInBtn && googleSignInModal) {
+  if (signInBtn) {
     signInBtn.addEventListener('click', () => {
-      googleSignInModal.style.display = 'flex';
-    });
-  }
-  if (closeGoogleSignInModal && googleSignInModal) {
-    closeGoogleSignInModal.addEventListener('click', () => {
-      googleSignInModal.style.display = 'none';
+      handleGoogleSignIn();
     });
   }
 });
@@ -789,9 +844,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   fetchAndDisplayGlobalTrends(); // Existing
 
-  // Initialize Google Sign In
-  // Delay initialization slightly to ensure Google API script is loaded
-  setTimeout(initializeGoogleSignIn, 500); 
+  // Initialize Auth
+  initializeAuth(); 
 
 
   if (logoutButton) {
@@ -810,8 +864,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.onload = function() {
-    initializeGoogleSignIn();
-    // Other initializations that depend on full page load can also go here.
+    // Auth is initialized in DOMContentLoaded, no need to duplicate here
 };
 
 // --- Browser History Integration ---

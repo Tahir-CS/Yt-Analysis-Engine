@@ -20,7 +20,6 @@ import { analyzeChannelTrendsWithAI } from './ai.js';
 
 // Expose global functions for HTML event handlers (needed for remove compare button)
 window.removeComparedChannel = removeComparedChannel;
-window.handleCredentialResponse = handleCredentialResponse;
 
 // --- Video Pagination State ---
 let allFetchedVideos = [];

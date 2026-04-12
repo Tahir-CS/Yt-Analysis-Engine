@@ -132,6 +132,8 @@ export async function fetchChannelData(channelId, sessionToken) {
   } else {
     throw new Error('Channel not found');
   }
+
+
 }
 
 export async function fetchRecentVideos(channelId, sessionToken) {
@@ -322,7 +324,7 @@ export async function fetchAndDisplayGlobalTrends() {
   `;
 
   try {
-    const res = await fetchWithTimeout('http://localhost:3000/api/youtube/global-trends', { timeout: 15000 });
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/global-trends`, { timeout: 15000 });
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     const data = await res.json();
     if (data.error) throw new Error(data.error);

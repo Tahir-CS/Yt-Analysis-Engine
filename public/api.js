@@ -333,7 +333,7 @@ export async function fetchAndDisplayGlobalTrends() {
   `;
 
   try {
-    const res = await fetchWithTimeout(`${API_BASE_URL}/api/youtube/global-trends`, { timeout: 15000 });
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/global-trends`, { timeout: 15000 });
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     const data = await res.json();
     if (data.error) throw new Error(data.error);

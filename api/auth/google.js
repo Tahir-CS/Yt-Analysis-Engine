@@ -31,6 +31,11 @@ export default async function handler(req, res) {
     }
 
     try {
+        console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
+        console.log('SUPABASE_URL:', process.env.SUPABASE_URL);
+        console.log('SUPABASE_SERVICE_KEY:', process.env.SUPABASE_SERVICE_KEY ? '***set***' : '***missing***');
+        console.log('JWT_SECRET:', process.env.JWT_SECRET ? '***set***' : '***missing***');
+        console.log('Request body:', req.body);
         const { token } = req.body;
 
         if (!token) {
@@ -75,6 +80,9 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Authentication error:', error);
-        res.status(500).json({ error: 'Authentication failed' });
+        if (error && error.stack) {
+            console.error('Error stack:', error.stack);
+        }
+        res.status(500).json({ error: 'Authentication failed', details: error.message, stack: error.stack });
     }
 }
