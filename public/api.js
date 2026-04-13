@@ -481,9 +481,3 @@ export function renderFooter() {
     linkedInLabel.style.marginBottom = '5px';
   }
 }
-
-// --- Add to main.js or call on page load ---
-// import { fetchAndDisplayGlobalTrends } from './api.js';
-// window.addEventListener('DOMContentLoaded', fetchAndDisplayGlobalTrends);
-// import { renderFooter } from './api.js';
-// window.addEventListener('DOMContentLoaded', renderFooter);
