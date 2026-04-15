@@ -60,9 +60,9 @@ export default async function handler(req, res) {
                 return res.status(201).json({ message: 'Channel added successfully' });
 
             case 'DELETE':
-                // Extract channelId from URL path
-                const pathParts = req.url.split('/');
-                const channelIdToRemove = pathParts[pathParts.length - 1];
+                const channelIdToRemove = Array.isArray(req.query.channelId)
+                    ? req.query.channelId[0]
+                    : req.query.channelId;
                 
                 if (!channelIdToRemove) {
                     return res.status(400).json({ error: 'Channel ID is required' });

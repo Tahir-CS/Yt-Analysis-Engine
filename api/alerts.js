@@ -40,7 +40,9 @@ export default async function handler(req, res) {
         const decoded = verifyToken(req);
         const googleId = decoded.googleId;
 
-        const { channelId } = req.query;
+        const channelId = Array.isArray(req.query.channelId)
+            ? req.query.channelId[0]
+            : req.query.channelId;
         if (!channelId) {
             return res.status(400).json({ error: 'Channel ID is required' });
         }
@@ -54,6 +56,10 @@ export default async function handler(req, res) {
                 const { type, threshold } = req.body;
                 if (!type || threshold === undefined) {
                     return res.status(400).json({ error: 'Alert type and threshold are required' });
+                }
+
+                if (!Number.isFinite(Number(threshold))) {
+                    return res.status(400).json({ error: 'Threshold must be a valid number' });
                 }
 
                 await setAlertCondition(googleId, channelId, type, threshold);

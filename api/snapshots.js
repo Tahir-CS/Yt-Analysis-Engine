@@ -39,7 +39,9 @@ export default async function handler(req, res) {
     try {
         verifyToken(req); // Verify user is authenticated
 
-        const { channelId } = req.query;
+        const channelId = Array.isArray(req.query.channelId)
+            ? req.query.channelId[0]
+            : req.query.channelId;
         if (!channelId) {
             return res.status(400).json({ error: 'Channel ID is required' });
         }
