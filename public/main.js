@@ -17,6 +17,7 @@ import { renderVideoStatsChart, renderComparisonCharts } from './charts.js';
 import { displayChannelInfo, showNotification } from './ui.js';
 import { comparedChannels, addComparedChannel, removeComparedChannel, renderCompareSection } from './compare.js';
 import { analyzeChannelTrendsWithAI } from './ai.js';
+import { API_BASE_URL, CPM_TABLE } from './constants.js';
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const supabaseUrl = 'https://bwhigxoevflzhvmpgxcn.supabase.co'; // Fixed URL (was .coL)
@@ -40,21 +41,6 @@ window.handleRemoveTrackedChannel = handleRemoveTrackedChannel;
 let allFetchedVideos = [];
 let videosShownCount = 0;
 const VIDEOS_PER_PAGE = 10;
-
-// --- Earnings CPM Table and UI ---
-const CPM_TABLE = {
-  "United States": { CPM_min: 4, CPM_max: 10 },
-  "Canada": { CPM_min: 3, CPM_max: 7 },
-  "United Kingdom": { CPM_min: 3, CPM_max: 7 },
-  "Australia": { CPM_min: 3, CPM_max: 8 },
-  "Germany": { CPM_min: 2.5, CPM_max: 6 },
-  "France": { CPM_min: 2, CPM_max: 5 },
-  "India": { CPM_min: 0.25, CPM_max: 1 },
-  "Pakistan": { CPM_min: 0.2, CPM_max: 0.8 },
-  "Brazil": { CPM_min: 0.5, CPM_max: 1.5 },
-  "Russia": { CPM_min: 0.5, CPM_max: 1.5 },
-  "Unknown": { CPM_min: 1, CPM_max: 3 }
-};
 
 function renderEarningsUI() {
   const channelInfo = document.getElementById('channelInfo');
@@ -167,21 +153,7 @@ function displayVideos(videos, reset = false) {
   let country = 'Unknown';
   const countrySelect = document.getElementById('countrySelect');
   if (countrySelect) country = countrySelect.value;
-  const CPM_TABLE = {
-    "United States": { CPM_min: 4, CPM_max: 10 },
-    "Canada": { CPM_min: 3, CPM_max: 7 },
-    "United Kingdom": { CPM_min: 3, CPM_max: 7 },
-    "Australia": { CPM_min: 3, CPM_max: 8 },
-    "Germany": { CPM_min: 2.5, CPM_max: 6 },
-    "France": { CPM_min: 2, CPM_max: 5 },
-    "India": { CPM_min: 0.25, CPM_max: 1 },
-    "Pakistan": { CPM_min: 0.2, CPM_max: 0.8 },
-    "Brazil": { CPM_min: 0.5, CPM_max: 1.5 },
-    "Russia": { CPM_min: 0.5, CPM_max: 1.5 },
-    "Unknown": { CPM_min: 1, CPM_max: 3 }
-  };
   const cpm = CPM_TABLE[country] || CPM_TABLE['Unknown'];
-  const avgCPM = (cpm.CPM_min + cpm.CPM_max) / 2;
   const videosHTML = toShow.map((video, idx) => {
     const snippet = video.snippet;
     const statistics = video.statistics;
@@ -305,9 +277,6 @@ document.getElementById('addToCompareBtn').onclick = async function(e) {
   } else {
     const status = document.getElementById('statusMessage');
     status.textContent = 'Searching for channels...';
-    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-        ? 'http://localhost:3000' 
-        : window.location.origin;
     const searchUrl = `${API_BASE_URL}/api/youtube?url=${encodeURIComponent(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${input}&maxResults=10`)}`;
     const res = await fetch(searchUrl, {
         headers: currentSessionToken ? { 'Authorization': `Bearer ${currentSessionToken}` } : {}
@@ -733,11 +702,6 @@ document.getElementById('channelForm').addEventListener('submit', async (e) => {
 async function searchAndSelectChannel(input, isSearchContextForDashboard = false) {
     const status = document.getElementById('statusMessage');
     status.textContent = 'Searching for channels...';
-    // Remove redeclaration of searchUrl, res, data, channelIds, statsUrl, statsRes, statsData, sorted, channelInfoContainer, status
-    // Only declare them once at the top of the function, and reuse for both code paths
-    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-        ? 'http://localhost:3000' 
-        : window.location.origin;
     const searchUrl = `${API_BASE_URL}/api/youtube?url=${encodeURIComponent(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${input}&maxResults=10`)}`;
     const res = await fetch(searchUrl, {
         headers: currentSessionToken ? { 'Authorization': `Bearer ${currentSessionToken}` } : {}

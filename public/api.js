@@ -1,10 +1,6 @@
 // api.js - Handles all API calls (YouTube Data API, Gemini AI, and App Backend)
 import { extractChannelId } from './utils.js';
-
-// Detect if running locally or on Vercel
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:3000' 
-    : window.location.origin; // Use same origin for Vercel deployment
+import { API_BASE_URL } from './constants.js';
 
 // --- Authentication ---
 export async function sendGoogleTokenToBackend(googleIdToken) {
