@@ -1,0 +1,56 @@
+{
+  // =============================================================
+  // TypeScript Compiler Configuration
+  // =============================================================
+  // This file tells the TypeScript compiler (tsc) how to turn our
+  // .ts source files into JavaScript that Node.js can actually run.
+  // =============================================================
+  "compilerOptions": {
+    // target: Which version of JavaScript to output.
+    // ES2022 supports modern features (async/await, optional chaining, etc.)
+    // and is fully supported by Node.js 18+.
+    "target": "ES2022",
+
+    // module: How to handle import/export statements in the OUTPUT.
+    // CommonJS is the Node.js native module system (require/module.exports).
+    // We use this even though we write ESM-style imports in TypeScript.
+    "module": "CommonJS",
+
+    // moduleResolution: How TypeScript FINDS imported modules.
+    // "node" follows the same algorithm as Node's require() — looks in
+    // node_modules, checks package.json "main" field, etc.
+    "moduleResolution": "node",
+
+    // outDir: Where to put the compiled JavaScript files.
+    // We keep source code in src/ and compiled output in dist/.
+    "outDir": "./dist",
+
+    // rootDir: Where our TypeScript source files live.
+    // TypeScript enforces this to keep the output structure clean.
+    "rootDir": "./src",
+
+    // strict: Enables ALL strict type-checking options at once.
+    // This catches bugs at compile time rather than at runtime.
+    // Includes: strictNullChecks, noImplicitAny, strictFunctionTypes, etc.
+    "strict": true,
+
+    // esModuleInterop: Allows default imports from CommonJS modules.
+    // Without this, you'd write: import * as express from 'express'
+    // With this, you can write:  import express from 'express'
+    "esModuleInterop": true,
+
+    // skipLibCheck: Skips type-checking of .d.ts files in node_modules.
+    // Many packages have slightly incorrect type definitions. This avoids
+    // those errors and dramatically speeds up compilation.
+    "skipLibCheck": true,
+
+    // forceConsistentCasingInFileNames: Prevents bugs on case-sensitive
+    // file systems (Linux servers) when developing on case-insensitive
+    // ones (Windows/macOS). e.g., import './Foo' vs import './foo'
+    "forceConsistentCasingInFileNames": true
+  },
+
+  // include: Which files/folders to compile.
+  // "src/**/*" means: everything inside the src/ directory recursively.
+  "include": ["src/**/*"]
+}

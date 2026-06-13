@@ -1,0 +1,135 @@
+version: '3.8'
+
+# ============================================================
+# CreatorIQ - Docker Compose Orchestration
+# ------------------------------------------------------------
+# This file defines our entire local development environment.
+# Running `docker-compose up` will spin up 3 services that
+# talk to each other inside a shared Docker network:
+#
+#   1. api    - Our Node.js/TypeScript Fastify backend
+#   2. db     - PostgreSQL with TimescaleDB + pgvector
+#   3. redis  - In-memory store for queues, rate limits, pub/sub
+#
+# System Design Concept: Service Orchestration
+# Instead of manually installing 3 different tools (Postgres,
+# Redis, Node), we declare the entire stack as code. This
+# guarantees every developer gets the exact same environment.
+# ============================================================
+
+services:
+
+  # -------------------------------------------------------
+  # SERVICE 1: The Backend API Server (Node.js / TypeScript)
+  # -------------------------------------------------------
+  # This is our main Fastify API + BullMQ worker process.
+  # It is built from the Dockerfile inside the ./server folder.
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      # Map host machine port 3000 → container port 3000
+      # Access via http://localhost:3000 on your machine
+      - "3000:3000"
+    environment:
+      # Node environment (controls logging level, optimizations, etc.)
+      - NODE_ENV=development
+      - PORT=3000
+
+      # Database connection string — points to the 'db' service below.
+      # Docker automatically resolves 'db' to the DB container's IP.
+      - DATABASE_URL=postgres://creatoriq:supersecret@db:5432/creatoriq_db
+
+      # Redis connection — points to the 'redis' service below.
+      - REDIS_URL=redis://redis:6379
+
+      # External API keys injected from your local .env file.
+      # NEVER hardcode real keys here; always use ${VAR} references.
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
+      - REDDIT_CLIENT_SECRET=${REDDIT_CLIENT_SECRET}
+    depends_on:
+      # Wait for the database to be healthy before starting the API.
+      # This prevents "can't connect to DB" crashes on cold start.
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      # Bind mount: local ./server folder → /app inside the container.
+      # This means code changes on your machine are instantly reflected
+      # inside the container WITHOUT needing to rebuild the image.
+      - ./server:/app
+      # Anonymous volume for node_modules so the container's installed
+      # packages are NOT overwritten by the empty local folder.
+      - /app/node_modules
+
+  # -------------------------------------------------------
+  # SERVICE 2: Database (PostgreSQL + TimescaleDB + pgvector)
+  # -------------------------------------------------------
+  # We use a CUSTOM Dockerfile (database/Dockerfile) instead
+  # of the plain postgres image because we need two extensions:
+  #
+  #   - TimescaleDB: Converts our metrics table into a hypertable
+  #     partitioned by time → blazing fast time-series queries.
+  #
+  #   - pgvector: Lets us store Gemini AI vector embeddings and
+  #     run cosine-similarity searches on comment sentiments.
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=creatoriq
+      - POSTGRES_PASSWORD=supersecret
+      - POSTGRES_DB=creatoriq_db
+    ports:
+      # Expose port 5432 so you can inspect the DB with tools
+      # like TablePlus, DBeaver, or psql on your local machine.
+      - "5432:5432"
+    volumes:
+      # Named volume: persists database data across container restarts.
+      # Without this, all your data would vanish on every `docker-compose down`.
+      - postgres_data:/var/lib/postgresql/data
+      # Mount our schema.sql file into the DB's init scripts folder.
+      # Postgres automatically runs any .sql file in this directory
+      # when the container starts for the first time.
+      - ./server/src/db/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+    healthcheck:
+      # Probe Postgres every 5s. The 'api' service won't start
+      # until this check passes, preventing race condition crashes.
+      test: ["CMD-SHELL", "pg_isready -U creatoriq -d creatoriq_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # -------------------------------------------------------
+  # SERVICE 3: Redis (In-Memory Data Store)
+  # -------------------------------------------------------
+  # Redis is used for THREE different purposes in CreatorIQ:
+  #
+  #   1. BullMQ Message Queue  → scheduling ingestion jobs
+  #   2. Token Bucket          → distributed YouTube rate limiting
+  #   3. Pub/Sub               → pushing live updates via SSE
+  #
+  # We use the lightweight 'alpine' variant to minimize image size.
+  redis:
+    image: redis:7-alpine
+    ports:
+      # Expose 6379 so you can inspect Redis with Redis Insight
+      # or the `redis-cli` tool on your local machine.
+      - "6379:6379"
+    volumes:
+      # Named volume: persists Redis data (queued jobs) across restarts.
+      - redis_data:/data
+
+# -------------------------------------------------------
+# Named Volumes Declaration
+# -------------------------------------------------------
+# Docker manages these volumes on your host machine. They survive
+# `docker-compose down` but are removed with `docker-compose down -v`.
+volumes:
+  postgres_data:
+  redis_data:

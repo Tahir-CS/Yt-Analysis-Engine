@@ -1,0 +1,59 @@
+{
+  "name": "creatoriq-server",
+  "version": "1.0.0",
+  "description": "CreatorIQ - Backend API, Workers, and AI Services",
+  "main": "dist/index.js",
+  "scripts": {
+    // ts-node-dev is like nodemon but for TypeScript.
+    // --respawn:       restart on crash
+    // --transpile-only: skip type checking on watch for faster reloads (tsc handles type safety at build time)
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    // tsc compiles all TypeScript to JavaScript in the dist/ folder
+    "build": "tsc",
+    // Used in production Docker image after build step
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    // BullMQ: Production-grade message queue built on Redis.
+    // Used for scheduling ingestion jobs and running background workers.
+    "bullmq": "^4.12.0",
+
+    // dotenv: Loads environment variables from .env file into process.env
+    "dotenv": "^16.3.1",
+
+    // Fastify: Extremely fast HTTP framework for Node.js.
+    // ~3x faster than Express thanks to its JSON schema-based serialization.
+    "fastify": "^4.24.3",
+
+    // ioredis: Full-featured Redis client for Node.js.
+    // Supports Lua scripting (needed for our atomic rate limiter),
+    // Pub/Sub, and cluster mode.
+    "ioredis": "^5.3.2",
+
+    // pg: The official PostgreSQL client for Node.js.
+    // We use it to connect to TimescaleDB and run raw SQL queries.
+    "pg": "^8.11.3",
+
+    // Puppeteer: Headless Chrome automation.
+    // Used to generate polished PDF "Creator Brand Deal Reports".
+    "puppeteer": "^21.5.0",
+
+    // Google GenAI SDK: Official client for the Gemini AI API.
+    // Used for channel niche classification, anomaly detection,
+    // comment embedding generation, and sponsorship explanations.
+    "@google/genai": "^0.1.2"
+  },
+  "devDependencies": {
+    // TypeScript type definitions for Node.js built-ins (fs, path, process, etc.)
+    "@types/node": "^20.9.0",
+
+    // TypeScript type definitions for the pg PostgreSQL client
+    "@types/pg": "^8.10.9",
+
+    // ts-node-dev: Runs TypeScript directly (no manual compile step needed in dev)
+    "ts-node-dev": "^2.0.0",
+
+    // TypeScript compiler itself
+    "typescript": "^5.2.2"
+  }
+}
