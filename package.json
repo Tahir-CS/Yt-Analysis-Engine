@@ -2,7 +2,7 @@
   "name": "youtube-tracker-cost-estimator",
   "version": "1.0.0",
   "type": "module",
-  "main": "server/dist/index.js",
+  "main": "index.js",
   "description": "CreatorIQ - YouTube Channel Analytics, ML View Prediction, and Sponsorship Valuation Engine.",
   "author": "Tahir",
   "license": "ISC",
