@@ -26,10 +26,10 @@ export const FypRadar = () => {
   return (
     <div className="page-container fyp-radar-page">
       <div className="page-header apple-reveal">
-        <div className="badge-pill">🚀 2026 FYP Algorithmic Radar</div>
-        <h1 className="page-heading">Viral Hook & Content Momentum Radar</h1>
+        <div className="badge-pill">Content Strategy</div>
+        <h1 className="page-heading">Title & Hook Analyzer</h1>
         <p className="page-subheading">
-          Analyze video hook dynamics, predict FYP click-through rates, and identify rising micro-trends before market saturation occurs.
+          Evaluate title structure, estimate potential click-through rate ranges, and review current category benchmarks.
         </p>
       </div>
 
@@ -37,8 +37,8 @@ export const FypRadar = () => {
       <section className="hook-analyzer-section glass-panel apple-reveal delay-1">
         <div className="section-header-row">
           <div>
-            <h2 className="section-title">⚡ AI Viral Hook & Title Analyzer</h2>
-            <p className="section-subtext">Evaluates psychological tension, curiosity gap, and thumbnail pairing potential</p>
+            <h2 className="section-title">Title & Opening Hook Assessment</h2>
+            <p className="section-subtext">Evaluates character length, numerical anchors, and curiosity elements against YouTube benchmarks</p>
           </div>
         </div>
 
@@ -48,11 +48,11 @@ export const FypRadar = () => {
               type="text"
               value={hookInput}
               onChange={(e) => setHookInput(e.target.value)}
-              placeholder="Paste your video title or opening spoken hook sentence..."
+              placeholder="Enter your video title or opening hook..."
               className="hook-text-input"
             />
             <button type="submit" className="primary-btn" disabled={isAnalyzing}>
-              {isAnalyzing ? 'Evaluating...' : 'Score Hook ➔'}
+              {isAnalyzing ? 'Analyzing...' : 'Analyze Title'}
             </button>
           </div>
         </form>
@@ -61,32 +61,32 @@ export const FypRadar = () => {
         {analysis && (
           <div className="hook-results-grid apple-reveal">
             <div className="score-tile glass-panel apple-reveal delay-1">
-              <div className="tile-label">Viral Probability</div>
-              <div className="tile-value highlight">{analysis.viralProbability}%</div>
+              <div className="tile-label">Hook Strength Score</div>
+              <div className="tile-value highlight">{analysis.viralProbability} / 100</div>
               <div className="progress-bar-bg">
                 <div className="progress-fill" style={{ width: `${analysis.viralProbability}%` }}></div>
               </div>
-              <div className="tile-subtext">Estimated FYP placement potential</div>
+              <div className="tile-subtext">Based on keyword structure and clarity</div>
             </div>
 
             <div className="score-tile glass-panel apple-reveal delay-2">
-              <div className="tile-label">Projected CTR</div>
+              <div className="tile-label">Projected CTR Range</div>
               <div className="tile-value positive">{analysis.estimatedCTR}</div>
-              <div className="tile-subtext">Benchmark: 4.5% - 7.5% across platform</div>
+              <div className="tile-subtext">Typical platform baseline: 4.0% — 7.5%</div>
             </div>
 
             <div className="score-tile glass-panel apple-reveal delay-3">
-              <div className="tile-label">Audience Retention Risk</div>
+              <div className="tile-label">Early Retention Factor</div>
               <div className="tile-value">{analysis.retentionRisk.split('(')[0]}</div>
               <div className="tile-subtext">{analysis.retentionRisk}</div>
             </div>
 
             <div className="suggestions-box glass-panel full-span apple-reveal delay-4">
-              <h4 className="suggestions-title">💡 High-Impact Algorithmic Optimizations:</h4>
+              <h4 className="suggestions-title">Recommended Refinements:</h4>
               <ul className="suggestions-list">
                 {analysis.suggestions.map((sug, i) => (
                   <li key={i} className="suggestion-item">
-                    <span className="bullet-icon">✦</span>
+                    <span className="bullet-icon">•</span>
                     <span>{sug}</span>
                   </li>
                 ))}
@@ -100,8 +100,8 @@ export const FypRadar = () => {
       <section className="trending-niches-section apple-reveal delay-1">
         <div className="section-header-row">
           <div>
-            <h2 className="section-title">🔥 2026 Content Momentum & Saturation Heatmap</h2>
-            <p className="section-subtext">Tracking rapid velocity topics with highest algorithmic viewer demand</p>
+            <h2 className="section-title">Category Demand & Saturation Benchmarks</h2>
+            <p className="section-subtext">Viewer demand levels and content saturation across major categories</p>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ export const FypRadar = () => {
                 <h3 className="niche-title">{niche.category}</h3>
                 <div className="momentum-score-badge">
                   <span className="score-num">{niche.momentumScore}</span>
-                  <span className="score-label">MOMENTUM</span>
+                  <span className="score-label">DEMAND</span>
                 </div>
               </div>
 

@@ -44,10 +44,10 @@ export const Contact = () => {
   return (
     <div className="page-container contact-page">
       <div className="page-header apple-reveal">
-        <div className="badge-pill">✉️ Direct Support & Partnerships</div>
-        <h1 className="page-heading">Contact CreatorIQ & Enterprise Desk</h1>
+        <div className="badge-pill">Support & Inquiries</div>
+        <h1 className="page-heading">Get in Touch</h1>
         <p className="page-subheading">
-          Get in touch regarding custom API feeds, enterprise creator audits, or technical integration questions.
+          Questions about sponsorship valuation models, API feeds, or self-hosted deployment.
         </p>
       </div>
 
@@ -55,7 +55,7 @@ export const Contact = () => {
         {/* Left: Contact Form */}
         <div className="contact-form-card glass-panel apple-reveal delay-1">
           <h2 className="section-title">Send a Message</h2>
-          <p className="section-subtext">Our engineering and partnership team responds within 24 hours.</p>
+          <p className="section-subtext">We typically respond within 24 business hours.</p>
 
           {submitted ? (
             <div className="success-message-box">
@@ -140,7 +140,7 @@ export const Contact = () => {
               </div>
 
               <button type="submit" className="primary-btn full-width">
-                Send Message ➔
+                Send Message
               </button>
             </form>
           )}
@@ -150,13 +150,18 @@ export const Contact = () => {
         <div className="contact-info-column">
           <div className="support-tiles-grid">
             <div className="support-tile glass-panel apple-reveal delay-2">
-              <span className="tile-icon">🏢</span>
-              <h4>Enterprise Inquiries</h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="tile-icon-svg">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <h4>Email Inquiries</h4>
               <p>partners@creatoriq.dev</p>
             </div>
             <div className="support-tile glass-panel apple-reveal delay-3">
-              <span className="tile-icon">💬</span>
-              <h4>Community & Discord</h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="tile-icon-svg">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <h4>Community & Discussion</h4>
               <p>discord.gg/creatoriq</p>
             </div>
           </div>

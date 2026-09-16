@@ -49,10 +49,10 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
   return (
     <div className="page-container valuation-page">
       <div className="page-header apple-reveal">
-        <div className="badge-pill">💰 Enterprise Sponsorship & AdSense Valuation</div>
-        <h1 className="page-heading">Creator Sponsorship & Cost Estimator</h1>
+        <div className="badge-pill">Sponsorship Valuation</div>
+        <h1 className="page-heading">Sponsorship Rate Estimator</h1>
         <p className="page-subheading">
-          Multi-variable dynamic pricing engine adjusting for niche CPM baselines, engagement multipliers, and audience geography tiers.
+          Calculates market sponsorship rates based on projected video views, category CPM averages, and audience engagement.
         </p>
       </div>
 
@@ -127,11 +127,11 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
         <div className="valuation-output glass-panel apple-reveal delay-2">
           <div className="section-header-row">
             <div>
-              <h3 className="section-title">Valuation Rate Sheet</h3>
-              <p className="section-subtext">Verified enterprise pricing range based on current market rates</p>
+              <h3 className="section-title">Estimated Rate Card</h3>
+              <p className="section-subtext">Standard pricing tiers based on industry brand spend benchmarks</p>
             </div>
             <button className="copy-btn" onClick={copyRatePitch}>
-              {copied ? '✓ Rate Sheet Copied!' : '📋 Copy Pitch Deck'}
+              {copied ? 'Copied to Clipboard' : 'Copy Rate Sheet'}
             </button>
           </div>
 
@@ -157,7 +157,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
                 </div>
 
                 <div className="package-tile glass-panel highlight-border apple-reveal delay-3">
-                  <div className="pkg-badge">POPULAR</div>
+                  <div className="pkg-badge">STANDARD</div>
                   <div className="pkg-name">60s Integrated Sponsor</div>
                   <div className="pkg-price">${valuation.minSponsorshipValue.toLocaleString()}</div>
                   <div className="pkg-desc">Dedicated segment, screen recording, pinned comment</div>
@@ -172,7 +172,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
 
               {/* Justification Box */}
               <div className="pitch-justification-box apple-reveal delay-5">
-                <h4>AI Data-Driven Pitch Justification:</h4>
+                <h4>Pricing Methodology & Justification:</h4>
                 <p>{valuation.explanation}</p>
               </div>
             </>

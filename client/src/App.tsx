@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { NavTab, ChannelData } from './types';
-import { DEMO_CHANNELS, checkBackendHealth } from './services/api';
+import { DEMO_CHANNELS, checkBackendHealth, lookupChannelOnline } from './services/api';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -45,17 +45,13 @@ export function App() {
     }
   }, [isDarkMode]);
 
-  const handleSearchChannel = (query: string) => {
-    const cleanQuery = query.toLowerCase().replace('@', '').trim();
-    if (DEMO_CHANNELS[cleanQuery]) {
-      setCurrentChannel(DEMO_CHANNELS[cleanQuery]);
+  const handleSearchChannel = async (query: string) => {
+    const found = await lookupChannelOnline(query);
+    if (found) {
+      setCurrentChannel(found);
+      setCurrentTab('dashboard');
     } else {
-      const match = Object.values(DEMO_CHANNELS).find(
-        (c) => c.name.toLowerCase().includes(cleanQuery) || c.handle.toLowerCase().includes(cleanQuery)
-      );
-      if (match) {
-        setCurrentChannel(match);
-      }
+      alert(`Channel "${query}" not found in current catalog. Try searching @MrBeast, @MKBHD, @veritasium, or @pewdiepie.`);
     }
   };
 

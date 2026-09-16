@@ -12,14 +12,14 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
   return (
     <div className="page-container reports-page">
       <div className="page-header no-print apple-reveal">
-        <div className="badge-pill">📄 Executive Audit & Media Kit</div>
-        <h1 className="page-heading">Executive Channel Audit Report</h1>
+        <div className="badge-pill">Media Kit & Rates</div>
+        <h1 className="page-heading">Channel Media Kit & Rate Sheet</h1>
         <p className="page-subheading">
-          Print-ready brand sponsorship audit document. Click below to download or print this executive report.
+          Exportable channel overview and estimated rate card for brand outreach and sponsorship pitches.
         </p>
         <div className="action-row">
           <button className="primary-btn" onClick={handlePrintPdf}>
-            🖨️ Download / Print Executive PDF
+            Print / Save PDF
           </button>
         </div>
       </div>
@@ -29,14 +29,19 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
         {/* Report Header */}
         <div className="report-header">
           <div className="report-brand">
-            <span className="brand-icon">⚡</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
             <div>
-              <h2>CreatorIQ Executive Audit</h2>
+              <h2>CreatorIQ Performance Summary</h2>
               <span className="report-date">Generated: {new Date().toLocaleDateString()}</span>
             </div>
           </div>
           <div className="verified-badge">
-            ✓ Verified 2026 Telemetry
+            Channel Overview
           </div>
         </div>
 
@@ -56,28 +61,28 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
           <div className="report-box apple-reveal delay-1">
             <span className="box-lbl">Total Subscribers</span>
             <strong className="box-val">{(currentChannel.subscribers / 1000000).toFixed(2)}M</strong>
-            <span className="box-sub">Top 0.1% platform-wide</span>
+            <span className="box-sub">Active Channel Reach</span>
           </div>
           <div className="report-box apple-reveal delay-2">
             <span className="box-lbl">Lifetime Channel Views</span>
             <strong className="box-val">{(currentChannel.totalViews / 1000000000).toFixed(2)}B</strong>
-            <span className="box-sub">High catalog longevity</span>
+            <span className="box-sub">Catalog Views</span>
           </div>
           <div className="report-box apple-reveal delay-3">
             <span className="box-lbl">Average Views / Upload</span>
             <strong className="box-val">{(currentChannel.avgViewsPerVideo / 1000000).toFixed(2)}M</strong>
-            <span className="box-sub">Predictive asymptotic mean</span>
+            <span className="box-sub">Recent Video Baseline</span>
           </div>
           <div className="report-box apple-reveal delay-4">
             <span className="box-lbl">Audience Engagement</span>
             <strong className="box-val">{(currentChannel.engagementRate * 100).toFixed(1)}%</strong>
-            <span className="box-sub">Like-to-view interaction score</span>
+            <span className="box-sub">Interaction Ratio</span>
           </div>
         </div>
 
         {/* Sponsorship Rate Guidance */}
         <div className="report-section-block">
-          <h4 className="report-section-heading">Verified Brand Sponsorship Rate Guidance</h4>
+          <h4 className="report-section-heading">Estimated Sponsorship Pricing</h4>
           <table className="report-table">
             <thead>
               <tr>
@@ -108,16 +113,16 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
 
         {/* Audit Methodology */}
         <div className="report-section-block methodology-box">
-          <h5>Methodology & System Verification:</h5>
+          <h5>Pricing Methodology & Notes:</h5>
           <p>
-            Audit telemetry ingested via CreatorIQ's TimescaleDB time-series engine with logarithmic growth validation. Historical view curves were tested against Student's t-distribution confidence intervals. Sentiment scores reflect natural language comment vector embeddings evaluated by Google Gemini AI.
+            Rates are estimated using 30-day catalog viewership baselines, standard category CPM ranges, and verified audience engagement. Actual sponsorship contracts may vary based on exclusivity, deliverable rights, and campaign scope.
           </p>
         </div>
 
         {/* Report Footer */}
         <div className="report-sheet-footer">
-          <span>CreatorIQ System ID: CIQ-{(Math.random() * 900000 + 100000).toFixed(0)}</span>
-          <span>Confidential • Prepared for Creator & Brand Agency Partners</span>
+          <span>Prepared with CreatorIQ Analytics</span>
+          <span>Confidential • For Brand & Agency Inquiries</span>
         </div>
       </div>
     </div>

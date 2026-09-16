@@ -45,30 +45,30 @@ export const Dashboard = ({
       {/* Top Hero Section */}
       <section className="dashboard-hero apple-reveal">
         <div className="hero-content">
-          <div className="apple-eyebrow">CREATOR INTELLIGENCE ENGINE</div>
+          <div className="apple-eyebrow">CREATOR ANALYTICS & VALUATION</div>
           <h1 className="page-heading">
             Channel Analytics.<br />
             Sponsorship Valued.
           </h1>
           <p className="page-subheading">
-            Live velocity tracking, logarithmic decay view forecasts, and data-driven brand rate modeling.
+            Track channel performance, project 48-hour video reach, and calculate fair sponsorship rates.
           </p>
 
           {/* Search & Quick Selector */}
           <form className="channel-search-bar" onSubmit={handleSearchSubmit}>
             <input
               type="text"
-              placeholder="Enter YouTube Channel URL, ID, or @handle..."
+              placeholder="Search channel (@MrBeast, @MKBHD, @veritasium)..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="search-input-field"
             />
-            <button type="submit" className="primary-btn">Track Channel</button>
+            <button type="submit" className="primary-btn">Search</button>
           </form>
 
           {/* Quick Demo Buttons */}
           <div className="quick-channels">
-            <span className="quick-label">Try instant profiles:</span>
+            <span className="quick-label">Featured profiles:</span>
             {Object.entries(DEMO_CHANNELS).map(([key, ch]) => (
               <button
                 key={key}
@@ -90,7 +90,7 @@ export const Dashboard = ({
             <div className="profile-title-row">
               <h2 className="channel-name">{currentChannel.name}</h2>
               <span className="channel-badge">{currentChannel.niche}</span>
-              <span className="country-badge">📍 {currentChannel.country}</span>
+              <span className="country-badge">{currentChannel.country}</span>
             </div>
             <p className="channel-handle">{currentChannel.handle} • {currentChannel.videoCount} Uploads</p>
           </div>
@@ -104,7 +104,7 @@ export const Dashboard = ({
               setCompareChannelKey(keys[0] || null);
             }}
           >
-            {compareChannel ? 'Swap Comparison' : '⚖️ Compare Channel'}
+            {compareChannel ? 'Change Comparison' : 'Compare Channel'}
           </button>
           <button className="accent-btn" onClick={() => onNavigate('valuation')}>
             Calculate Sponsorship &rsaquo;
@@ -116,44 +116,57 @@ export const Dashboard = ({
       <section className="metric-cards-grid">
         <div className="metric-card glass-panel apple-reveal delay-1">
           <div className="metric-header">
-            <span className="metric-icon">👥</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="metric-icon-svg">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
             <span className="metric-badge positive">+{(currentChannel.subscribers * 0.003).toLocaleString()} / wk</span>
           </div>
           <div className="metric-value">{(currentChannel.subscribers / 1000000).toFixed(1)}M</div>
           <div className="metric-title">Subscribers</div>
-          <div className="metric-subtext">Velocity: +{Math.round(currentChannel.viewVelocityPerHour * 0.02).toLocaleString()} new subs/day</div>
+          <div className="metric-subtext">Estimated growth: +{Math.round(currentChannel.viewVelocityPerHour * 0.02).toLocaleString()} / day</div>
         </div>
 
         <div className="metric-card glass-panel apple-reveal delay-2">
           <div className="metric-header">
-            <span className="metric-icon">📈</span>
-            <span className="metric-badge highlight">Live Telemetry</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="metric-icon-svg">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <span className="metric-badge highlight">Active Pace</span>
           </div>
           <div className="metric-value">+{currentChannel.viewVelocityPerHour.toLocaleString()}</div>
           <div className="metric-title">Views / Hour</div>
-          <div className="metric-subtext">Real-time aggregate consumption rate</div>
+          <div className="metric-subtext">Estimated aggregate channel velocity</div>
         </div>
 
         <div className="metric-card glass-panel apple-reveal delay-3">
           <div className="metric-header">
-            <span className="metric-icon">💵</span>
-            <span className="metric-badge positive">AdSense + RPM</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="metric-icon-svg">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            <span className="metric-badge positive">Estimated RPM</span>
           </div>
           <div className="metric-value">
             ${(currentChannel.estimatedMonthlyEarnings.min / 1000).toFixed(0)}k - ${(currentChannel.estimatedMonthlyEarnings.max / 1000).toFixed(0)}k
           </div>
-          <div className="metric-title">Est. Monthly Earnings</div>
-          <div className="metric-subtext">Based on 55% creator revenue split</div>
+          <div className="metric-title">Est. Monthly Ad Revenue</div>
+          <div className="metric-subtext">Standard 55% creator share baseline</div>
         </div>
 
         <div className="metric-card glass-panel apple-reveal delay-4">
           <div className="metric-header">
-            <span className="metric-icon">🎯</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="metric-icon-svg">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 14 14"></polyline>
+            </svg>
             <span className="metric-badge positive">{(currentChannel.engagementRate * 100).toFixed(1)}% Eng.</span>
           </div>
           <div className="metric-value">{(currentChannel.avgViewsPerVideo / 1000000).toFixed(2)}M</div>
           <div className="metric-title">Avg Views / Upload</div>
-          <div className="metric-subtext">Across historical benchmark dataset</div>
+          <div className="metric-subtext">Based on recent video catalog average</div>
         </div>
       </section>
 
@@ -162,7 +175,7 @@ export const Dashboard = ({
         <section className="comparison-section glass-panel apple-reveal delay-1">
           <div className="section-header-row">
             <div>
-              <h3 className="section-title">⚖️ Head-to-Head Creator Comparison</h3>
+              <h3 className="section-title">Channel Comparison</h3>
               <p className="section-subtext">Side-by-side performance benchmarking & sponsorship value divergence</p>
             </div>
             <button className="close-btn" onClick={() => setCompareChannelKey(null)}>✕ Close</button>
@@ -210,13 +223,13 @@ export const Dashboard = ({
       <section className="recent-videos-section glass-panel">
         <div className="section-header-row">
           <div>
-            <h3 className="section-title">🎬 Recent Video Trajectory & Predictive Asymptote</h3>
+            <h3 className="section-title">Recent Uploads & 48-Hour Forecast</h3>
             <p className="section-subtext">
-              Early view accumulation curve fitted to logarithmic model \(V(t) = V_{'{max}'}(1 - e^{'-kt'})\)
+              Early view growth fitted to asymptotic saturation model
             </p>
           </div>
           <button className="text-link-btn" onClick={() => onNavigate('predictor')}>
-            Open Full ML Predictor ➔
+            Open View Forecast &rsaquo;
           </button>
         </div>
 

@@ -7,7 +7,7 @@ export const DEMO_CHANNELS: Record<string, ChannelData> = {
     id: 'UCX6OQ3DkcsbYNE6H8uQQuVA',
     name: 'MrBeast',
     handle: '@MrBeast',
-    avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150&auto=format&fit=crop&q=80',
+    avatar: 'https://yt3.googleusercontent.com/nxYrc_1_2f77DoBadyxMTmv7ZpRZapHR5jbuYe7PlPd5cIRJxtNNEYyOC0ZsxaDyJJzXrnJiuDE=s900-c-k-c0x00ffffff-no-rj',
     subscribers: 360000000,
     totalViews: 68500000000,
     videoCount: 840,
@@ -27,7 +27,7 @@ export const DEMO_CHANNELS: Record<string, ChannelData> = {
     id: 'UCBJycsmduvYEL83R_U4JriQ',
     name: 'Marques Brownlee',
     handle: '@MKBHD',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    avatar: 'https://yt3.googleusercontent.com/qu4TmIaYUlS41-dJ9gZ7DUR3nilvmB5_11i6OKSdvNnBNiyOusZP1bMN6ICnuxtjFBb6ioKgRQ=s900-c-k-c0x00ffffff-no-rj',
     subscribers: 19400000,
     totalViews: 4400000000,
     videoCount: 1680,
@@ -38,8 +38,8 @@ export const DEMO_CHANNELS: Record<string, ChannelData> = {
     estimatedMonthlyEarnings: { min: 140000, max: 320000 },
     engagementRate: 0.054,
     recentVideos: [
-      { id: 'v4', title: 'The Apple Vision Pro 2: Did They Fix It?', views: 3400000, hoursAgo: 48, likeRatio: 0.95, predictedLifetime: 4800000 },
-      { id: 'v5', title: 'Blind Smartphone Camera Test 2026', views: 6200000, hoursAgo: 120, likeRatio: 0.98, predictedLifetime: 7500000 },
+      { id: 'v4', title: 'The Apple Vision Pro 2: What Happened?', views: 3400000, hoursAgo: 48, likeRatio: 0.95, predictedLifetime: 4800000 },
+      { id: 'v5', title: 'Blind Smartphone Camera Test Results', views: 6200000, hoursAgo: 120, likeRatio: 0.98, predictedLifetime: 7500000 },
       { id: 'v6', title: 'Why Everyone Is Abandoning Electric Cars', views: 4100000, hoursAgo: 240, likeRatio: 0.94, predictedLifetime: 5200000 },
     ]
   },
@@ -47,7 +47,7 @@ export const DEMO_CHANNELS: Record<string, ChannelData> = {
     id: 'UCSHZKyawb77ixDdsGog4iWA',
     name: 'Lex Fridman',
     handle: '@LexFridman',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    avatar: 'https://yt3.googleusercontent.com/ytc/AIdro_ljfMy9kUR1PH9VRf-XsTsPqFMgORC_zodOQVEAm4hx36lC=s900-c-k-c0x00ffffff-no-rj',
     subscribers: 4450000,
     totalViews: 650000000,
     videoCount: 460,
@@ -58,15 +58,15 @@ export const DEMO_CHANNELS: Record<string, ChannelData> = {
     estimatedMonthlyEarnings: { min: 85000, max: 210000 },
     engagementRate: 0.061,
     recentVideos: [
-      { id: 'v7', title: 'Sam Altman: AGI, OpenAI, and Future of Humanity', views: 4200000, hoursAgo: 96, likeRatio: 0.96, predictedLifetime: 6100000 },
-      { id: 'v8', title: 'Yann LeCun: Why LLMs Will Never Reach Human AI', views: 2800000, hoursAgo: 216, likeRatio: 0.95, predictedLifetime: 3900000 },
+      { id: 'v7', title: 'Sam Altman: OpenAI and Future of Computing', views: 4200000, hoursAgo: 96, likeRatio: 0.96, predictedLifetime: 6100000 },
+      { id: 'v8', title: 'Yann LeCun: Limitations of Modern LLMs', views: 2800000, hoursAgo: 216, likeRatio: 0.95, predictedLifetime: 3900000 },
     ]
   },
   veritasium: {
     id: 'UCHnyfMqiRRG1u-2MsSQLbXA',
     name: 'Veritasium',
     handle: '@veritasium',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    avatar: 'https://yt3.googleusercontent.com/7vCbvtCqtjQ3YLgsJt7Y952MQV1sBvhllSCSxHP8_sVZdcPCBrITfhkN2RdyCuwPnsByq-1GoA=s900-c-k-c0x00ffffff-no-rj',
     subscribers: 17100000,
     totalViews: 2900000000,
     videoCount: 390,
@@ -79,6 +79,25 @@ export const DEMO_CHANNELS: Record<string, ChannelData> = {
     recentVideos: [
       { id: 'v9', title: 'The Infinite Speed of Light Paradox', views: 8900000, hoursAgo: 60, likeRatio: 0.98, predictedLifetime: 12000000 },
       { id: 'v10', title: 'How Math Proved What Computers Can Never Do', views: 5300000, hoursAgo: 180, likeRatio: 0.97, predictedLifetime: 7800000 },
+    ]
+  },
+  pewdiepie: {
+    id: 'UC-lHJZR3Gqxm24_Vd_AJ5Yw',
+    name: 'PewDiePie',
+    handle: '@pewdiepie',
+    avatar: 'https://yt3.googleusercontent.com/vik8mAiwHQbXiFyKfZ3__p55_VBdGvwxPpuPJBBwdbF0PjJxikXhrP-C3nLQAMAxGNd_-xQCIg=s900-c-k-c0x00ffffff-no-rj',
+    subscribers: 111000000,
+    totalViews: 29300000000,
+    videoCount: 4750,
+    avgViewsPerVideo: 3800000,
+    viewVelocityPerHour: 55000,
+    niche: 'Gaming & Vlogs',
+    country: 'Japan',
+    estimatedMonthlyEarnings: { min: 65000, max: 180000 },
+    engagementRate: 0.065,
+    recentVideos: [
+      { id: 'v11', title: 'Life in Japan With a Newborn Baby', views: 4200000, hoursAgo: 96, likeRatio: 0.98, predictedLifetime: 5600000 },
+      { id: 'v12', title: 'I Built My Ultimate Workshop', views: 3500000, hoursAgo: 240, likeRatio: 0.97, predictedLifetime: 4800000 },
     ]
   }
 };
@@ -302,3 +321,34 @@ export async function analyzeViralHook(title: string): Promise<FypHookAnalysis> 
     ],
   };
 }
+
+export async function lookupChannelOnline(query: string): Promise<ChannelData | null> {
+  const cleanQuery = query.toLowerCase().replace('@', '').trim();
+
+  // 1. Instant match against featured profiles
+  if (DEMO_CHANNELS[cleanQuery]) {
+    return DEMO_CHANNELS[cleanQuery];
+  }
+  const localMatch = Object.values(DEMO_CHANNELS).find(
+    (c) => c.name.toLowerCase().includes(cleanQuery) || c.handle.toLowerCase().includes(cleanQuery)
+  );
+  if (localMatch) {
+    return localMatch;
+  }
+
+  // 2. Query backend live lookup
+  try {
+    const res = await fetch(`${API_BASE}/api/v1/channel/lookup?handle=${encodeURIComponent(cleanQuery)}`, {
+      signal: AbortSignal.timeout(6000),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.channel) {
+        return data.channel;
+      }
+    }
+  } catch {}
+
+  return null;
+}
+
