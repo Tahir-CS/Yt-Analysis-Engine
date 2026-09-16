@@ -1,7 +1,6 @@
 {
   "name": "youtube-tracker-cost-estimator",
   "version": "1.0.0",
-  "type": "module",
   "main": "index.js",
   "description": "CreatorIQ - YouTube Channel Analytics, ML View Prediction, and Sponsorship Valuation Engine.",
   "author": "Tahir",
@@ -56,9 +55,3 @@
     "not dead"
   ]
 }
-
-
-
-
-
-
