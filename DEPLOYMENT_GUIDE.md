@@ -1,92 +1,63 @@
 # 🚀 CreatorIQ 2026 Engine - Render Deployment Guide
 
-This guide walks you through deploying the **CreatorIQ (YouTube Tracker & Cost Estimator)** production-grade stack to [Render](https://render.com).
+This repository is configured so you can deploy it to [Render](https://render.com) in **under 2 minutes**.
 
 ---
 
-## ⚡ Option 1: 1-Click Blueprint Deployment (Recommended)
+## ⭐ Option 1: Single Full-Stack Web Service (Simplest & Recommended)
 
-The repository includes a ready-to-use [`render.yaml`](./render.yaml) blueprint file that automatically configures:
-1. **`creatoriq-api`**: Fastify Node.js Web Service (Port 10000)
-2. **`creatoriq-client`**: Vite + React Static Site (with SPA routing)
-3. **`creatoriq-db`**: Managed PostgreSQL Database
+Deploy the **entire application** (Fastify API + React 19 Frontend) as a single Web Service. The Fastify backend automatically serves the compiled React frontend at `/` and all API endpoints at `/api/v1/...` and `/health`.
 
 ### Steps:
-1. **Push your code to GitHub**:
-   Make sure all commits are pushed to your GitHub repository:
-   `https://github.com/Tahir-CS/Yt-Analysis-Engine`
-2. **Log into Render**:
-   Go to [dashboard.render.com](https://dashboard.render.com).
-3. **Create New Blueprint**:
-   - Click **New +** → **Blueprint**.
-   - Connect your GitHub repository: `Tahir-CS/Yt-Analysis-Engine`.
-   - Render will parse `render.yaml` and show the 3 resources to provision.
-   - Click **Apply**.
-4. **Add Optional API Keys** (in the Render Dashboard for `creatoriq-api`):
-   - `GEMINI_API_KEY`: Your Google AI Studio API key (for AI sanity checks and comment sentiment).
-   - `YOUTUBE_API_KEY`: Your YouTube Data API v3 key (for live video queries).
-   - `REDIS_URL`: (Optional) Free Redis URL from [Upstash](https://upstash.com) or Render Redis for queue workers.
+1. Go to [dashboard.render.com](https://dashboard.render.com).
+2. Click **New +** → **Web Service**.
+3. Connect your GitHub repository: **`Tahir-CS/Yt-Analysis-Engine`**.
+4. Configure these fields:
+   * **Name**: `creatoriq` (or any name you choose)
+   * **Region**: Oregon (or closest to you)
+   * **Branch**: `main`
+   * **Root Directory**: *(Leave blank)*
+   * **Runtime**: `Node`
+   * **Build Command**: `npm run build`
+   * **Start Command**: `npm start`
+   * **Plan**: `Free`
+5. **Environment Variables** (Optional):
+   * `NODE_ENV` = `production`
+   * `GEMINI_API_KEY` = *(Your Google Gemini API Key from AI Studio)*
+   * `YOUTUBE_API_KEY` = *(Your YouTube Data v3 API Key)*
+   * `DATABASE_URL` = *(Optional: PostgreSQL connection string)*
+6. Click **Deploy Web Service**!
 
 ---
 
-## 🛠️ Option 2: Manual Service-by-Service Deployment on Render
+## ⚡ Option 2: 1-Click Blueprint Deployment (`render.yaml`)
 
-If you prefer to configure the services manually in Render:
+If you want separate dedicated services (Web Service + Static Site + Managed Postgres DB):
 
-### Service 1: Backend Web Service
-* **Name**: `creatoriq-api`
-* **Environment**: `Node`
-* **Root Directory**: `server`
-* **Build Command**: `npm install && npm run build`
-* **Start Command**: `node dist/index.js`
-* **Health Check Path**: `/health`
-* **Environment Variables**:
-  * `NODE_ENV` = `production`
-  * `PORT` = `10000`
-  * `HOST` = `0.0.0.0`
-  * `DATABASE_URL` = *(Your Render or external PostgreSQL connection string)*
-  * `GEMINI_API_KEY` = *(Your Gemini API key)*
-  * `YOUTUBE_API_KEY` = *(Your YouTube Data v3 API key)*
-
-### Service 2: Frontend Static Site
-* **Name**: `creatoriq-client`
-* **Root Directory**: `client`
-* **Build Command**: `npm install && npm run build`
-* **Publish Directory**: `dist`
-* **Rewrites / Redirects**:
-  * **Source**: `/*`
-  * **Destination**: `/index.html`
-  * **Action**: `Rewrite`
-* **Environment Variables**:
-  * `VITE_API_BASE_URL` = `https://creatoriq-api.onrender.com` *(Replace with your API's Render URL)*
+1. Go to [dashboard.render.com](https://dashboard.render.com/blueprints).
+2. Click **New +** → **Blueprint**.
+3. Select **`Tahir-CS/Yt-Analysis-Engine`**.
+4. Render will read [`render.yaml`](./render.yaml) and configure:
+   * `creatoriq-api`: Fastify API Web Service
+   * `creatoriq-client`: Vite React Static Site
+   * `creatoriq-db`: PostgreSQL Database
+5. Click **Apply**.
 
 ---
 
-## 💻 Local Development & Testing
+## 🔍 How to Fix the "Cannot find module index.html" Error
 
-You can run both services locally before deploying:
-
-### Backend:
-```bash
-cd server
-npm install
-npm run dev
-# Server starts on http://localhost:3000
-# Health check: http://localhost:3000/health
+If you encountered:
 ```
-
-### Frontend:
-```bash
-cd client
-npm install
-npm run dev
-# React Vite client starts on http://localhost:5173
+Error: Cannot find module '/opt/render/project/src/index.html'
+==> Running 'node index.html'
 ```
+**Why it happened**: Render tried to run `node index.html` because the older legacy `package.json` had `"main": "index.html"`.
 
----
-
-## 🛡️ Resilient Fallback Architecture
-
-The CreatorIQ 2026 Engine is built with **zero-crash graceful fallbacks**:
-* If `DATABASE_URL` or `REDIS_URL` are not provided, the API server boots normally and serves logarithmic curve regressions, sponsorship pricing, and FYP viral analytics.
-* If the backend server is temporarily sleeping (e.g. Render free tier spin-up), the React client automatically uses high-fidelity mathematical client-side regression curves so users never see an error or broken page.
+**The Fix (Already applied in the latest commit)**:
+1. Root `package.json` now points to `"main": "server/dist/index.js"`.
+2. The start script is now `"start": "node server/dist/index.js"`.
+3. In your Render Dashboard under **Settings** for your Web Service:
+   * Ensure **Start Command** is set to: `npm start` (or `node server/dist/index.js`).
+   * Ensure **Build Command** is set to: `npm run build`.
+   * Click **Save Changes** and click **Manual Deploy** → **Deploy latest commit**.

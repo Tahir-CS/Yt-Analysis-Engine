@@ -1,5 +1,7 @@
 import fastify, { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import { fitVideoViewsCurve, sanityCheckPredictionWithAI, DataPoint, CreatorHistoricalBaseline } from './services/predictiveModel';
 import { calculateSponsorshipValuation, ValuationMetrics } from './services/valuation';
 import { streamRoutes } from './api/routes/stream';
@@ -45,8 +47,8 @@ server.get('/health', async (_request, reply) => {
   });
 });
 
-// Root ping
-server.get('/', async (_request, reply) => {
+// Root API ping
+server.get('/api', async (_request, reply) => {
   return reply.status(200).send({
     name: 'CreatorIQ & YT Analysis Engine API',
     version: '2.0.0',
@@ -239,6 +241,57 @@ if (process.env.REDIS_URL) {
 } else {
   server.log.warn('[Redis] REDIS_URL not provided. SSE stream endpoints running in mock heartbeat mode.');
 }
+
+// 8. Serve Frontend Static Build (client/dist) with SPA Fallback
+const clientDistCandidates = [
+  path.resolve(__dirname, '../../client/dist'),
+  path.resolve(process.cwd(), 'client/dist'),
+  path.resolve(__dirname, '../client/dist'),
+];
+const clientDistPath = clientDistCandidates.find((p) => fs.existsSync(p)) || '';
+
+if (clientDistPath) {
+  server.log.info(`[Static Assets] Serving compiled client from: ${clientDistPath}`);
+}
+
+server.setNotFoundHandler((request, reply) => {
+  const url = request.raw.url || '/';
+
+  if (url.startsWith('/api/') || url.startsWith('/health')) {
+    return reply.status(404).send({ error: 'Endpoint not found' });
+  }
+
+  if (clientDistPath) {
+    const cleanPath = url.split('?')[0];
+    const targetFile = cleanPath === '/' ? 'index.html' : cleanPath.replace(/^\//, '');
+    const fullPath = path.join(clientDistPath, targetFile);
+
+    if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+      const ext = path.extname(fullPath).toLowerCase();
+      const mimeTypes: Record<string, string> = {
+        '.html': 'text/html; charset=utf-8',
+        '.js': 'application/javascript; charset=utf-8',
+        '.css': 'text/css; charset=utf-8',
+        '.svg': 'image/svg+xml',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.ico': 'image/x-icon',
+        '.json': 'application/json',
+      };
+      reply.header('Content-Type', mimeTypes[ext] || 'application/octet-stream');
+      return reply.send(fs.createReadStream(fullPath));
+    }
+
+    // SPA fallback: Return index.html for any frontend route
+    const indexHtml = path.join(clientDistPath, 'index.html');
+    if (fs.existsSync(indexHtml)) {
+      reply.header('Content-Type', 'text/html; charset=utf-8');
+      return reply.send(fs.createReadStream(indexHtml));
+    }
+  }
+
+  reply.status(404).send({ error: 'Not found' });
+});
 
 // Start Server
 const start = async () => {
