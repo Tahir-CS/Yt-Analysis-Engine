@@ -60,10 +60,13 @@ export const Predictor = ({
     const scaleY = (v: number) => height - padding - (v / maxV) * (height - padding * 2);
 
     let curvePath = `M ${scaleX(0)} ${scaleY(0)}`;
+    let areaPath = `M ${scaleX(0)} ${height - padding} L ${scaleX(0)} ${scaleY(0)}`;
     for (let t = 0.5; t <= maxT; t += 1) {
       const predV = result.vMax * (1 - Math.exp(-result.k * t));
       curvePath += ` L ${scaleX(t)} ${scaleY(predV)}`;
+      areaPath += ` L ${scaleX(t)} ${scaleY(predV)}`;
     }
+    areaPath += ` L ${scaleX(maxT)} ${height - padding} Z`;
 
     const asymptoteY = scaleY(result.vMax);
     const upperY = scaleY(result.confidenceInterval.upper);
@@ -71,6 +74,37 @@ export const Predictor = ({
 
     return (
       <svg className="ml-curve-svg" viewBox={`0 0 ${width} ${height}`}>
+        <defs>
+          <linearGradient id="curveAreaGlow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
+            <stop offset="60%" stopColor="#8b5cf6" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.0" />
+          </linearGradient>
+          <filter id="pointGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Subtle Horizontal Grid lines */}
+        {[0.25, 0.5, 0.75, 1.0].map((frac, idx) => {
+          const y = height - padding - frac * (height - padding * 2);
+          return (
+            <line
+              key={idx}
+              x1={padding}
+              y1={y}
+              x2={width - padding}
+              y2={y}
+              stroke="rgba(255,255,255,0.05)"
+              strokeDasharray="3 3"
+            />
+          );
+        })}
+
         {/* Grid lines */}
         <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} className="axis-line" />
         <line x1={padding} y1={padding} x2={padding} y2={height - padding} className="axis-line" />
@@ -84,6 +118,9 @@ export const Predictor = ({
           className="confidence-band"
         />
 
+        {/* Glowing Gradient Area Fill */}
+        <path d={areaPath} fill="url(#curveAreaGlow)" />
+
         {/* Asymptote Ceiling Line */}
         <line
           x1={padding}
@@ -93,8 +130,8 @@ export const Predictor = ({
           className="asymptote-line"
           strokeDasharray="4 4"
         />
-        <text x={width - padding - 100} y={asymptoteY - 6} className="svg-label">
-          Vmax: {(result.vMax / 1000000).toFixed(2)}M
+        <text x={width - padding - 110} y={asymptoteY - 8} className="svg-label">
+          Asymptote (Vmax): {(result.vMax / 1000000).toFixed(2)}M
         </text>
 
         {/* Fitted Curve */}
@@ -103,15 +140,21 @@ export const Predictor = ({
         {/* Observed Early Data Points */}
         {points.map((p, i) => (
           <g key={i}>
-            <circle cx={scaleX(p.t)} cy={scaleY(p.v)} r="5" className="data-point-dot" />
-            <text x={scaleX(p.t) - 10} y={scaleY(p.v) - 10} className="point-label">
+            <circle
+              cx={scaleX(p.t)}
+              cy={scaleY(p.v)}
+              r="6"
+              className="data-point-dot"
+              filter="url(#pointGlow)"
+            />
+            <text x={scaleX(p.t) - 12} y={scaleY(p.v) - 12} className="point-label">
               {(p.v / 1000).toFixed(0)}k
             </text>
           </g>
         ))}
 
         <text x={width / 2} y={height - 10} className="axis-title">Hours Since Upload (t)</text>
-        <text x={15} y={height / 2} className="axis-title" transform={`rotate(-90, 15, ${height / 2})`}>
+        <text x={18} y={height / 2} className="axis-title" transform={`rotate(-90, 18, ${height / 2})`}>
           Cumulative Views V(t)
         </text>
       </svg>

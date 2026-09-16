@@ -29,11 +29,15 @@ export function App() {
   // Theme synchronization
   useEffect(() => {
     if (isDarkMode) {
-      document.body.classList.add('dark');
-      document.body.classList.remove('light');
+      document.documentElement.classList.add('dark', 'dark-theme');
+      document.documentElement.classList.remove('light', 'light-theme');
+      document.body.classList.add('dark', 'dark-theme');
+      document.body.classList.remove('light', 'light-theme');
     } else {
-      document.body.classList.add('light');
-      document.body.classList.remove('dark');
+      document.documentElement.classList.add('light', 'light-theme');
+      document.documentElement.classList.remove('dark', 'dark-theme');
+      document.body.classList.add('light', 'light-theme');
+      document.body.classList.remove('dark', 'dark-theme');
     }
   }, [isDarkMode]);
 
