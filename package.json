@@ -28,20 +28,17 @@
   ],
   "scripts": {
     "dev": "npm --prefix server run dev",
-    "build": "npm --prefix server install && npm --prefix server run build && npm --prefix client install && npm --prefix client run build",
-    "postinstall": "npm --prefix server install && npm --prefix server run build && npm --prefix client install && npm --prefix client run build",
-    "build:server": "npm --prefix server install && npm --prefix server run build",
-    "build:client": "npm --prefix client install && npm --prefix client run build",
-    "start": "node server/dist/index.js",
-    "lint": "echo 'No lint error'",
-    "test": "echo 'No test errors'"
+    "build": "echo 'Precompiled production assets ready'",
+    "start": "node server/dist/index.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.3",
-    "google-auth-library": "^10.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "node-fetch": "^3.3.2",
-    "@google-cloud/bigquery": "^7.8.0"
+    "@google/genai": "^0.2.0",
+    "bullmq": "^4.12.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.24.3",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.3",
+    "puppeteer": "^21.5.0"
   },
   "devDependencies": {
     "vercel": "^37.6.0"
