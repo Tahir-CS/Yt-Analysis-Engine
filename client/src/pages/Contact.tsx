@@ -43,7 +43,7 @@ export const Contact = () => {
 
   return (
     <div className="page-container contact-page">
-      <div className="page-header">
+      <div className="page-header apple-reveal">
         <div className="badge-pill">✉️ Direct Support & Partnerships</div>
         <h1 className="page-heading">Contact CreatorIQ & Enterprise Desk</h1>
         <p className="page-subheading">
@@ -53,7 +53,7 @@ export const Contact = () => {
 
       <div className="contact-layout">
         {/* Left: Contact Form */}
-        <div className="contact-form-card glass-panel">
+        <div className="contact-form-card glass-panel apple-reveal delay-1">
           <h2 className="section-title">Send a Message</h2>
           <p className="section-subtext">Our engineering and partnership team responds within 24 hours.</p>
 
@@ -149,19 +149,19 @@ export const Contact = () => {
         {/* Right: FAQ & Support Channels */}
         <div className="contact-info-column">
           <div className="support-tiles-grid">
-            <div className="support-tile glass-panel">
+            <div className="support-tile glass-panel apple-reveal delay-2">
               <span className="tile-icon">🏢</span>
               <h4>Enterprise Inquiries</h4>
               <p>partners@creatoriq.dev</p>
             </div>
-            <div className="support-tile glass-panel">
+            <div className="support-tile glass-panel apple-reveal delay-3">
               <span className="tile-icon">💬</span>
               <h4>Community & Discord</h4>
               <p>discord.gg/creatoriq</p>
             </div>
           </div>
 
-          <div className="faq-card glass-panel">
+          <div className="faq-card glass-panel apple-reveal delay-3">
             <h3 className="section-title">Frequently Asked Questions</h3>
             <div className="faq-accordion">
               {faqs.map((faq, idx) => (

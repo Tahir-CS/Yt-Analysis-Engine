@@ -11,7 +11,7 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
 
   return (
     <div className="page-container reports-page">
-      <div className="page-header no-print">
+      <div className="page-header no-print apple-reveal">
         <div className="badge-pill">📄 Executive Audit & Media Kit</div>
         <h1 className="page-heading">Executive Channel Audit Report</h1>
         <p className="page-subheading">
@@ -25,7 +25,7 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
       </div>
 
       {/* Styled Printable Report Sheet */}
-      <div className="printable-sheet glass-panel" id="printable-report">
+      <div className="printable-sheet glass-panel apple-reveal delay-1" id="printable-report">
         {/* Report Header */}
         <div className="report-header">
           <div className="report-brand">
@@ -53,22 +53,22 @@ export const Reports = ({ currentChannel }: ReportsProps) => {
 
         {/* Core Metrics Grid */}
         <div className="report-metrics-grid">
-          <div className="report-box">
+          <div className="report-box apple-reveal delay-1">
             <span className="box-lbl">Total Subscribers</span>
             <strong className="box-val">{(currentChannel.subscribers / 1000000).toFixed(2)}M</strong>
             <span className="box-sub">Top 0.1% platform-wide</span>
           </div>
-          <div className="report-box">
+          <div className="report-box apple-reveal delay-2">
             <span className="box-lbl">Lifetime Channel Views</span>
             <strong className="box-val">{(currentChannel.totalViews / 1000000000).toFixed(2)}B</strong>
             <span className="box-sub">High catalog longevity</span>
           </div>
-          <div className="report-box">
+          <div className="report-box apple-reveal delay-3">
             <span className="box-lbl">Average Views / Upload</span>
             <strong className="box-val">{(currentChannel.avgViewsPerVideo / 1000000).toFixed(2)}M</strong>
             <span className="box-sub">Predictive asymptotic mean</span>
           </div>
-          <div className="report-box">
+          <div className="report-box apple-reveal delay-4">
             <span className="box-lbl">Audience Engagement</span>
             <strong className="box-val">{(currentChannel.engagementRate * 100).toFixed(1)}%</strong>
             <span className="box-sub">Like-to-view interaction score</span>

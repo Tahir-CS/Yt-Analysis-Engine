@@ -1,7 +1,7 @@
 export const About = () => {
   return (
     <div className="page-container about-page">
-      <div className="page-header">
+      <div className="page-header apple-reveal">
         <div className="badge-pill">ℹ️ Production Engineering Breakdown</div>
         <h1 className="page-heading">About CreatorIQ & Enterprise Architecture</h1>
         <p className="page-subheading">
@@ -10,12 +10,12 @@ export const About = () => {
       </div>
 
       {/* Architecture Overview Diagram Card */}
-      <section className="architecture-diagram-section glass-panel">
+      <section className="architecture-diagram-section glass-panel apple-reveal delay-1">
         <h2 className="section-title">🏗️ High-Throughput System Architecture</h2>
         <p className="section-subtext">Distributed microservice pipeline designed for horizontal scale on Render and cloud containers:</p>
 
         <div className="diagram-flow">
-          <div className="flow-step">
+          <div className="flow-step apple-reveal delay-1">
             <div className="step-badge">1. INGESTION</div>
             <div className="step-card">
               <h4>YouTube & Reddit APIs</h4>
@@ -25,7 +25,7 @@ export const About = () => {
 
           <div className="flow-arrow">➔</div>
 
-          <div className="flow-step">
+          <div className="flow-step apple-reveal delay-2">
             <div className="step-badge">2. QUEUE & WORKERS</div>
             <div className="step-card">
               <h4>BullMQ + Redis</h4>
@@ -35,7 +35,7 @@ export const About = () => {
 
           <div className="flow-arrow">➔</div>
 
-          <div className="flow-step">
+          <div className="flow-step apple-reveal delay-3">
             <div className="step-badge">3. TIME-SERIES DB</div>
             <div className="step-card">
               <h4>TimescaleDB + pgvector</h4>
@@ -45,7 +45,7 @@ export const About = () => {
 
           <div className="flow-arrow">➔</div>
 
-          <div className="flow-step">
+          <div className="flow-step apple-reveal delay-4">
             <div className="step-badge">4. AI & CLIENT</div>
             <div className="step-card">
               <h4>Fastify SSE + React</h4>
@@ -57,7 +57,7 @@ export const About = () => {
 
       {/* Core Engineering Pillars */}
       <div className="pillars-grid">
-        <div className="pillar-card glass-panel">
+        <div className="pillar-card glass-panel apple-reveal delay-1">
           <div className="pillar-icon">⚡</div>
           <h3>Fastify & Server-Sent Events (SSE)</h3>
           <p>
@@ -65,7 +65,7 @@ export const About = () => {
           </p>
         </div>
 
-        <div className="pillar-card glass-panel">
+        <div className="pillar-card glass-panel apple-reveal delay-2">
           <div className="pillar-icon">📊</div>
           <h3>TimescaleDB Hypertables</h3>
           <p>
@@ -73,7 +73,7 @@ export const About = () => {
           </p>
         </div>
 
-        <div className="pillar-card glass-panel">
+        <div className="pillar-card glass-panel apple-reveal delay-3">
           <div className="pillar-icon">🤖</div>
           <h3>Gemini AI & pgvector</h3>
           <p>
@@ -81,7 +81,7 @@ export const About = () => {
           </p>
         </div>
 
-        <div className="pillar-card glass-panel">
+        <div className="pillar-card glass-panel apple-reveal delay-4">
           <div className="pillar-icon">📐</div>
           <h3>Logarithmic View Prediction</h3>
           <p>
@@ -91,7 +91,7 @@ export const About = () => {
       </div>
 
       {/* Deployment Note */}
-      <section className="deploy-info-card glass-panel">
+      <section className="deploy-info-card glass-panel apple-reveal delay-2">
         <div className="deploy-info-left">
           <h3>🚀 Cloud Deployment Ready</h3>
           <p>

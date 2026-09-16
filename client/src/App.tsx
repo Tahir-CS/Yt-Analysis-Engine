@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { NavTab, ChannelData } from './types';
 import { DEMO_CHANNELS, checkBackendHealth } from './services/api';
+import { useScrollReveal } from './hooks/useScrollReveal';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Dashboard } from './pages/Dashboard';
@@ -18,6 +19,9 @@ export function App() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [isBackendOnline, setIsBackendOnline] = useState<boolean>(false);
   const [predictorInitialData, setPredictorInitialData] = useState<{ title: string; views: number } | null>(null);
+
+  // Activate Apple scroll reveal observer on mount and tab switch
+  useScrollReveal(currentTab);
 
   // Check backend connectivity on mount
   useEffect(() => {
@@ -72,32 +76,34 @@ export function App() {
       />
 
       <main className="main-content-area">
-        {currentTab === 'dashboard' && (
-          <Dashboard
-            currentChannel={currentChannel}
-            onSelectChannel={setCurrentChannel}
-            onNavigate={setCurrentTab}
-            onLoadVideoToPredictor={handleLoadVideoToPredictor}
-          />
-        )}
+        <div key={currentTab} className="apple-tab-viewport">
+          {currentTab === 'dashboard' && (
+            <Dashboard
+              currentChannel={currentChannel}
+              onSelectChannel={setCurrentChannel}
+              onNavigate={setCurrentTab}
+              onLoadVideoToPredictor={handleLoadVideoToPredictor}
+            />
+          )}
 
-        {currentTab === 'predictor' && (
-          <Predictor
-            currentChannel={currentChannel}
-            initialVideoTitle={predictorInitialData?.title}
-            initialViews={predictorInitialData?.views}
-          />
-        )}
+          {currentTab === 'predictor' && (
+            <Predictor
+              currentChannel={currentChannel}
+              initialVideoTitle={predictorInitialData?.title}
+              initialViews={predictorInitialData?.views}
+            />
+          )}
 
-        {currentTab === 'fyp-radar' && <FypRadar />}
+          {currentTab === 'fyp-radar' && <FypRadar />}
 
-        {currentTab === 'valuation' && <Valuation currentChannel={currentChannel} />}
+          {currentTab === 'valuation' && <Valuation currentChannel={currentChannel} />}
 
-        {currentTab === 'reports' && <Reports currentChannel={currentChannel} />}
+          {currentTab === 'reports' && <Reports currentChannel={currentChannel} />}
 
-        {currentTab === 'about' && <About />}
+          {currentTab === 'about' && <About />}
 
-        {currentTab === 'contact' && <Contact />}
+          {currentTab === 'contact' && <Contact />}
+        </div>
       </main>
 
       <Footer onSelectTab={setCurrentTab} />

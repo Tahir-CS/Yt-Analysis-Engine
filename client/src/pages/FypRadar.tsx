@@ -25,7 +25,7 @@ export const FypRadar = () => {
 
   return (
     <div className="page-container fyp-radar-page">
-      <div className="page-header">
+      <div className="page-header apple-reveal">
         <div className="badge-pill">🚀 2026 FYP Algorithmic Radar</div>
         <h1 className="page-heading">Viral Hook & Content Momentum Radar</h1>
         <p className="page-subheading">
@@ -34,7 +34,7 @@ export const FypRadar = () => {
       </div>
 
       {/* Top: Viral Hook & Title Analyzer */}
-      <section className="hook-analyzer-section glass-panel">
+      <section className="hook-analyzer-section glass-panel apple-reveal delay-1">
         <div className="section-header-row">
           <div>
             <h2 className="section-title">⚡ AI Viral Hook & Title Analyzer</h2>
@@ -59,8 +59,8 @@ export const FypRadar = () => {
 
         {/* Results Card */}
         {analysis && (
-          <div className="hook-results-grid">
-            <div className="score-tile glass-panel">
+          <div className="hook-results-grid apple-reveal">
+            <div className="score-tile glass-panel apple-reveal delay-1">
               <div className="tile-label">Viral Probability</div>
               <div className="tile-value highlight">{analysis.viralProbability}%</div>
               <div className="progress-bar-bg">
@@ -69,19 +69,19 @@ export const FypRadar = () => {
               <div className="tile-subtext">Estimated FYP placement potential</div>
             </div>
 
-            <div className="score-tile glass-panel">
+            <div className="score-tile glass-panel apple-reveal delay-2">
               <div className="tile-label">Projected CTR</div>
               <div className="tile-value positive">{analysis.estimatedCTR}</div>
               <div className="tile-subtext">Benchmark: 4.5% - 7.5% across platform</div>
             </div>
 
-            <div className="score-tile glass-panel">
+            <div className="score-tile glass-panel apple-reveal delay-3">
               <div className="tile-label">Audience Retention Risk</div>
               <div className="tile-value">{analysis.retentionRisk.split('(')[0]}</div>
               <div className="tile-subtext">{analysis.retentionRisk}</div>
             </div>
 
-            <div className="suggestions-box glass-panel full-span">
+            <div className="suggestions-box glass-panel full-span apple-reveal delay-4">
               <h4 className="suggestions-title">💡 High-Impact Algorithmic Optimizations:</h4>
               <ul className="suggestions-list">
                 {analysis.suggestions.map((sug, i) => (
@@ -97,7 +97,7 @@ export const FypRadar = () => {
       </section>
 
       {/* Bottom: Trending Niche Momentum Radar */}
-      <section className="trending-niches-section">
+      <section className="trending-niches-section apple-reveal delay-1">
         <div className="section-header-row">
           <div>
             <h2 className="section-title">🔥 2026 Content Momentum & Saturation Heatmap</h2>
@@ -107,7 +107,7 @@ export const FypRadar = () => {
 
         <div className="niches-grid">
           {trendingNiches.map((niche, idx) => (
-            <div key={idx} className="niche-card glass-panel">
+            <div key={idx} className={`niche-card glass-panel apple-reveal delay-${(idx % 4) + 1}`}>
               <div className="niche-card-header">
                 <h3 className="niche-title">{niche.category}</h3>
                 <div className="momentum-score-badge">

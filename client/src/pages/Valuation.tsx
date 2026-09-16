@@ -48,7 +48,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
 
   return (
     <div className="page-container valuation-page">
-      <div className="page-header">
+      <div className="page-header apple-reveal">
         <div className="badge-pill">💰 Enterprise Sponsorship & AdSense Valuation</div>
         <h1 className="page-heading">Creator Sponsorship & Cost Estimator</h1>
         <p className="page-subheading">
@@ -58,7 +58,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
 
       <div className="valuation-layout">
         {/* Controls Column */}
-        <div className="valuation-controls glass-panel">
+        <div className="valuation-controls glass-panel apple-reveal delay-1">
           <h3 className="section-title">Valuation Parameters</h3>
 
           <div className="input-group">
@@ -124,7 +124,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
         </div>
 
         {/* Output Column */}
-        <div className="valuation-output glass-panel">
+        <div className="valuation-output glass-panel apple-reveal delay-2">
           <div className="section-header-row">
             <div>
               <h3 className="section-title">Valuation Rate Sheet</h3>
@@ -138,7 +138,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
           {valuation && (
             <>
               {/* Primary Rate Range Card */}
-              <div className="primary-rate-card">
+              <div className="primary-rate-card apple-reveal delay-1">
                 <div className="rate-range-label">Recommended 60s Mid-Roll Integration</div>
                 <div className="rate-range-values">
                   ${valuation.minSponsorshipValue.toLocaleString()} <span>—</span> ${valuation.maxSponsorshipValue.toLocaleString()}
@@ -150,20 +150,20 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
 
               {/* Package Tier Breakdown */}
               <div className="packages-grid">
-                <div className="package-tile glass-panel">
+                <div className="package-tile glass-panel apple-reveal delay-2">
                   <div className="pkg-name">30s Pre-roll / Mention</div>
                   <div className="pkg-price">${Math.round(valuation.minSponsorshipValue * 0.6).toLocaleString()}</div>
                   <div className="pkg-desc">Quick verbal callout + description link</div>
                 </div>
 
-                <div className="package-tile glass-panel highlight-border">
+                <div className="package-tile glass-panel highlight-border apple-reveal delay-3">
                   <div className="pkg-badge">POPULAR</div>
                   <div className="pkg-name">60s Integrated Sponsor</div>
                   <div className="pkg-price">${valuation.minSponsorshipValue.toLocaleString()}</div>
                   <div className="pkg-desc">Dedicated segment, screen recording, pinned comment</div>
                 </div>
 
-                <div className="package-tile glass-panel">
+                <div className="package-tile glass-panel apple-reveal delay-4">
                   <div className="pkg-name">Full Dedicated Video</div>
                   <div className="pkg-price">${Math.round(valuation.maxSponsorshipValue * 2.2).toLocaleString()}</div>
                   <div className="pkg-desc">Entire video centered on product/brand theme</div>
@@ -171,7 +171,7 @@ Justification: ${valuation.explanation} Powered by CreatorIQ Valuation Engine.`;
               </div>
 
               {/* Justification Box */}
-              <div className="pitch-justification-box">
+              <div className="pitch-justification-box apple-reveal delay-5">
                 <h4>AI Data-Driven Pitch Justification:</h4>
                 <p>{valuation.explanation}</p>
               </div>

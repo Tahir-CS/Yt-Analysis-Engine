@@ -154,7 +154,7 @@ export const Predictor = ({
 
   return (
     <div className="page-container predictor-page">
-      <div className="page-header">
+      <div className="page-header apple-reveal">
         <div className="badge-pill">🧠 Statistical ML & Logarithmic Decay Modeling</div>
         <h1 className="page-heading">Video View Predictive Engine</h1>
         <p className="page-subheading">
@@ -165,7 +165,7 @@ export const Predictor = ({
 
       <div className="predictor-layout">
         {/* Left: Input Parameters Panel */}
-        <div className="predictor-controls glass-panel">
+        <div className="predictor-controls glass-panel apple-reveal delay-1">
           <h3 className="section-title">1. Early Metrics Input</h3>
           <p className="section-subtext">Enter early view telemetry points collected during initial distribution:</p>
 
@@ -220,7 +220,7 @@ export const Predictor = ({
         </div>
 
         {/* Right: Curve Visualization & AI Sanity Check */}
-        <div className="predictor-visual glass-panel">
+        <div className="predictor-visual glass-panel apple-reveal delay-2">
           <div className="section-header-row">
             <div>
               <h3 className="section-title">2. View Accumulation Curve</h3>
@@ -235,7 +235,7 @@ export const Predictor = ({
 
           {/* AI Constraint Validation Card */}
           {result && (
-            <div className="ai-validation-card">
+            <div className="ai-validation-card apple-reveal delay-3">
               <div className="ai-badge">
                 <span className="gemini-spark">✨</span>
                 <strong>Gemini AI Constraint Validation</strong>

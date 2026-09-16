@@ -43,12 +43,15 @@ export const Dashboard = ({
   return (
     <div className="page-container dashboard-page">
       {/* Top Hero Section */}
-      <section className="dashboard-hero">
+      <section className="dashboard-hero apple-reveal">
         <div className="hero-content">
-          <div className="badge-pill">🔥 2026 High-Throughput Intelligence</div>
-          <h1 className="page-heading">YouTube Channel Tracker & Cost Estimator</h1>
+          <div className="apple-eyebrow">CREATOR INTELLIGENCE ENGINE</div>
+          <h1 className="page-heading">
+            Channel Analytics.<br />
+            Sponsorship Valued.
+          </h1>
           <p className="page-subheading">
-            Live velocity tracking, logarithmic decay view forecasts, and AI-backed brand rate modeling.
+            Live velocity tracking, logarithmic decay view forecasts, and data-driven brand rate modeling.
           </p>
 
           {/* Search & Quick Selector */}
@@ -80,7 +83,7 @@ export const Dashboard = ({
       </section>
 
       {/* Active Channel Header Card */}
-      <section className="channel-profile-card glass-panel">
+      <section className="channel-profile-card glass-panel apple-reveal delay-1">
         <div className="profile-left">
           <img src={currentChannel.avatar} alt={currentChannel.name} className="channel-avatar" />
           <div className="profile-info">
@@ -104,14 +107,14 @@ export const Dashboard = ({
             {compareChannel ? 'Swap Comparison' : '⚖️ Compare Channel'}
           </button>
           <button className="accent-btn" onClick={() => onNavigate('valuation')}>
-            💰 Calculate Sponsorship
+            Calculate Sponsorship &rsaquo;
           </button>
         </div>
       </section>
 
       {/* Main Metric Cards Grid */}
       <section className="metric-cards-grid">
-        <div className="metric-card glass-panel">
+        <div className="metric-card glass-panel apple-reveal delay-1">
           <div className="metric-header">
             <span className="metric-icon">👥</span>
             <span className="metric-badge positive">+{(currentChannel.subscribers * 0.003).toLocaleString()} / wk</span>
@@ -121,7 +124,7 @@ export const Dashboard = ({
           <div className="metric-subtext">Velocity: +{Math.round(currentChannel.viewVelocityPerHour * 0.02).toLocaleString()} new subs/day</div>
         </div>
 
-        <div className="metric-card glass-panel">
+        <div className="metric-card glass-panel apple-reveal delay-2">
           <div className="metric-header">
             <span className="metric-icon">📈</span>
             <span className="metric-badge highlight">Live Telemetry</span>
@@ -131,7 +134,7 @@ export const Dashboard = ({
           <div className="metric-subtext">Real-time aggregate consumption rate</div>
         </div>
 
-        <div className="metric-card glass-panel">
+        <div className="metric-card glass-panel apple-reveal delay-3">
           <div className="metric-header">
             <span className="metric-icon">💵</span>
             <span className="metric-badge positive">AdSense + RPM</span>
@@ -143,7 +146,7 @@ export const Dashboard = ({
           <div className="metric-subtext">Based on 55% creator revenue split</div>
         </div>
 
-        <div className="metric-card glass-panel">
+        <div className="metric-card glass-panel apple-reveal delay-4">
           <div className="metric-header">
             <span className="metric-icon">🎯</span>
             <span className="metric-badge positive">{(currentChannel.engagementRate * 100).toFixed(1)}% Eng.</span>
@@ -156,7 +159,7 @@ export const Dashboard = ({
 
       {/* Comparison Section (If triggered) */}
       {compareChannel && (
-        <section className="comparison-section glass-panel">
+        <section className="comparison-section glass-panel apple-reveal delay-1">
           <div className="section-header-row">
             <div>
               <h3 className="section-title">⚖️ Head-to-Head Creator Comparison</h3>
