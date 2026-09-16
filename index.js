@@ -1,1 +1,2 @@
-import './server/dist/index.js';
+// index.js - Render entrypoint shim
+require('./server/dist/index.js');
