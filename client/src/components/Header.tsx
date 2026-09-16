@@ -47,7 +47,6 @@ export const Header = ({
         {/* Brand Logo */}
         <div className="brand" onClick={() => onSelectTab('dashboard')}>
           <div className="logo-badge">
-            <span className="logo-glow"></span>
             <span className="logo-icon">⚡</span>
           </div>
           <div className="brand-text">

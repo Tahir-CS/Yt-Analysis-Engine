@@ -75,18 +75,10 @@ export const Predictor = ({
     return (
       <svg className="ml-curve-svg" viewBox={`0 0 ${width} ${height}`}>
         <defs>
-          <linearGradient id="curveAreaGlow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
-            <stop offset="60%" stopColor="#8b5cf6" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.0" />
+          <linearGradient id="curveAreaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0071e3" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#0071e3" stopOpacity="0.0" />
           </linearGradient>
-          <filter id="pointGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
         </defs>
 
         {/* Subtle Horizontal Grid lines */}
@@ -99,7 +91,7 @@ export const Predictor = ({
               y1={y}
               x2={width - padding}
               y2={y}
-              stroke="rgba(255,255,255,0.05)"
+              stroke="rgba(255,255,255,0.06)"
               strokeDasharray="3 3"
             />
           );
@@ -118,8 +110,8 @@ export const Predictor = ({
           className="confidence-band"
         />
 
-        {/* Glowing Gradient Area Fill */}
-        <path d={areaPath} fill="url(#curveAreaGlow)" />
+        {/* Clean Subtle Area Fill */}
+        <path d={areaPath} fill="url(#curveAreaGrad)" />
 
         {/* Asymptote Ceiling Line */}
         <line
@@ -143,9 +135,8 @@ export const Predictor = ({
             <circle
               cx={scaleX(p.t)}
               cy={scaleY(p.v)}
-              r="6"
+              r="4.5"
               className="data-point-dot"
-              filter="url(#pointGlow)"
             />
             <text x={scaleX(p.t) - 12} y={scaleY(p.v) - 12} className="point-label">
               {(p.v / 1000).toFixed(0)}k
