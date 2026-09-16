@@ -1,0 +1,68 @@
+# =============================================================
+# CreatorIQ - Render Infrastructure as Code (Blueprint)
+# =============================================================
+# Connect this repository to Render (https://dashboard.render.com/blueprints)
+# Render will automatically detect this file and provision the services.
+
+services:
+  # -----------------------------------------------------------
+  # 1. BACKEND WEB SERVICE (Fastify API + Predictive ML Engine)
+  # -----------------------------------------------------------
+  - type: web
+    name: creatoriq-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: node dist/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      # Optional: Add your Google Gemini API Key in Render Dashboard
+      - key: GEMINI_API_KEY
+        sync: false
+      # Optional: Add your YouTube Data v3 API Key in Render Dashboard
+      - key: YOUTUBE_API_KEY
+        sync: false
+      # Automatically links to the PostgreSQL database defined below
+      - key: DATABASE_URL
+        fromDatabase:
+          name: creatoriq-db
+          property: connectionString
+      # Optional Redis URL (e.g. from Upstash or Render Redis)
+      - key: REDIS_URL
+        sync: false
+
+  # -----------------------------------------------------------
+  # 2. FRONTEND STATIC SITE (Vite + React 19 Client Dashboard)
+  # -----------------------------------------------------------
+  - type: static_site
+    name: creatoriq-client
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      # Single Page Application (SPA) rewrite rule
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: creatoriq-api
+          property: host
+
+# -------------------------------------------------------------
+# 3. MANAGED DATABASE (PostgreSQL)
+# -------------------------------------------------------------
+databases:
+  - name: creatoriq-db
+    plan: free
+    databaseName: creatoriq_production
+    user: creatoriq_admin

@@ -7,37 +7,16 @@ dotenv.config();
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error('DATABASE_URL environment variable is missing. Please define it in your .env or Docker environments.');
+  console.warn('[Database Warning] DATABASE_URL environment variable is missing. Database operations will be mocked or throw on query.');
 }
 
-/**
- * ============================================================================
- * SYSTEM DESIGN CONCEPT: DATABASE CONNECTION POOLING
- * ----------------------------------------------------------------------------
- * Creating a database connection is an expensive network operation.
- * If we open a new connection for every single HTTP request:
- *   1. It adds 50-100ms of latency per request just to perform the TCP/TLS handshake.
- *   2. The database will quickly run out of file descriptors and memory under high load.
- * 
- * To solve this, we use a Connection Pool (`pg.Pool`).
- * 
- * - The pool creates a fixed set of connections on startup (e.g., max: 20).
- * - When a request arrives, it "borrows" an idle connection from the pool.
- * - Once the query completes, the connection is returned to the pool for reuse.
- * - This drops query latency to near 0ms overhead.
- * ============================================================================
- */
 const pool = new Pool({
-  connectionString,
-  // Maximum number of clients the pool should contain
+  connectionString: connectionString || 'postgres://localhost:5432/creatoriq_db',
   max: 20,
-  // Number of milliseconds a client must sit idle in the pool before being closed
   idleTimeoutMillis: 30000,
-  // Number of milliseconds to wait before timing out when connecting a new client
   connectionTimeoutMillis: 2000,
 });
 
-// Handle idle client connection errors (e.g., database restarts, network drops)
 pool.on('error', (err) => {
   console.error('Unexpected error on idle database client:', err.message);
 });
