@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
+# dist allowed for prebuilt cloud deployments
 dist-ssr
 *.local
 

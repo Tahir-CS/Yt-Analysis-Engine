@@ -4,9 +4,9 @@
 # Dependencies
 node_modules/
 
-# Build outputs
-dist/
+# Build outputs (allow server/dist and client/dist for cloud deployments)
 build/
+
 
 # Logs
 *.log
